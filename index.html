@@ -6,9 +6,9 @@
   <title>गणपती मंडळ व्यवस्थापन प्रणाली — Final</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@700&family=Lekton:wght@700&family=Modak&family=Mukta:wght@700&family=Ruwudu:wght@400..700&family=Tiro+Devanagari+Marathi&family=Yatra+One&display=swap" rel="stylesheet">
-  <style>
-    body{margin:0;font-family:"Noto Sans Devanagari",sans-serif;background:#fffaf3;color:#222}
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400;700&family=Lekton:wght@700&family=Modak&family=Mukta:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Ruwudu:wght@400..700&family=Tiro+Devanagari+Marathi&family=Yatra+One&display=swap" rel="stylesheet">
+  <style id="appStyles">
+    body{margin:0;font-family:"Noto Sans Devanagari",Mukta,sans-serif;background:#fffaf3;color:#222}
     header{background:linear-gradient(90deg,#ff7043,#ff9800);color:white;padding:12px 18px;font-weight:800;font-size:20px;display:flex;justify-content:space-between;align-items:center}
     nav{background:#fff3e0;padding:8px;display:flex;gap:8px;border-bottom:1px solid #f0d7b5; flex-wrap: wrap;}
     nav button{padding:6px 10px;border:none;border-radius:6px;cursor:pointer;background:transparent}
@@ -24,6 +24,8 @@
     button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
     .btn-primary{background:#169873;color:white}
     .btn-secondary{background:#999;color:white}
+    .btn-accent{background:#e65100;color:white}
+    .btn-outline{background:#fff;border:1px solid #ccc;color:#333}
     .small{padding:6px 8px;font-size:13px}
     .list{margin-top:10px}
     .row-item{padding:8px;border:1px solid #eee;border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
@@ -35,70 +37,263 @@
     .dash-card{background:#fffef8;border:1px solid #f1d9a6;border-radius:8px;padding:10px;min-width:180px}
     .muted{color:#666;font-size:13px}
     .logo-row{display:flex;gap:12px;align-items:center}
-    .logo-preview{max-height:80px;border:1px solid #eee;padding:6px;background:white}
-    .report-group-name {
-      color: #ff7043;
-      font-size: 28px;
-      font-family: 'Baloo Bhai 2', 'Noto Sans Devanagari', sans-serif;
-      font-weight: 700;
+    .logo-preview{max-height:80px;border:1px solid #eee;padding:6px;background:white;object-fit:contain}
+    .settings-panel{background:#fffdf8;border:1px solid #f0d7b5;border-radius:10px;padding:14px;margin:12px 0}
+    .settings-panel h4{margin:0 0 10px;color:#bf360c}
+    .settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+    .settings-grid label{font-size:12px;margin-bottom:4px}
+    .action-bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .preview-frame{background:#f5f5f5;border:1px dashed #ccc;border-radius:8px;padding:16px;overflow:auto;max-height:75vh}
+    .report-sheet{
+      --rpt-title-font: 'Baloo Bhai 2','Noto Sans Devanagari',sans-serif;
+      --rpt-body-font: 'Mukta','Noto Sans Devanagari',sans-serif;
+      --rpt-th-font: 'Mukta','Noto Sans Devanagari',sans-serif;
+      --rpt-td-font: 'Noto Sans Devanagari','Mukta',sans-serif;
+      --rpt-title-size: 28px;
+      --rpt-motto-size: 14px;
+      --rpt-th-size: 12px;
+      --rpt-td-size: 11px;
+      --rpt-footer-size: 11px;
+      --rpt-title-weight: 700;
+      --rpt-logo-w: 80px;
+      --rpt-logo-h: 80px;
+      --rpt-header-gap: 12px;
+      --rpt-row-h: 28px;
+      --rpt-min-row-h: 24px;
+      --rpt-cell-pad: 6px;
+      --rpt-header-pad: 8px;
+      --rpt-border: 1px;
+      --rpt-section-gap: 20px;
+      --rpt-align: center;
+      --rpt-v-align: middle;
+      --rpt-h-align: left;
+      --col-sr: 8%;
+      --col-name: 50%;
+      --col-amt: 22%;
+      --col-status: 20%;
+      --col-com-name: 55%;
+      --col-com-role: 45%;
+      --col-don-desc: 40%;
+      --col-don-amt: 20%;
+      --col-exp-cat: 70%;
+      --col-exp-amt: 30%;
+      --rpt-color-title: #c45c00;
+      --rpt-color-subtitle: #444444;
+      --rpt-color-header-bg: transparent;
+      --rpt-color-header-text: #333333;
+      --rpt-color-th-bg: #fff8e1;
+      --rpt-color-th-text: #000000;
+      --rpt-color-body-text: #222222;
+      --rpt-color-border: #e0d0a8;
+      --rpt-color-alt-row: #fffdf8;
+      --rpt-color-section: #5d4037;
+      --rpt-color-total: #c45c00;
+      --rpt-color-footer: #555555;
+      --rpt-color-bg: #ffffff;
+      background:var(--rpt-color-bg);color:var(--rpt-color-body-text);width:100%;max-width:210mm;margin:0 auto;padding:16px;box-sizing:border-box;
+      font-family:var(--rpt-body-font);box-shadow:0 2px 12px rgba(0,0,0,.08);
     }
-    .report-meta-item {
-        display: block;
-        margin-top: 4px;
-    }
-    .report-section-header {
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 5px;
-      margin-top: 20px;
-    }
+    .report-sheet.landscape-preview{max-width:297mm}
+    .rpt-logo-wrap img.resizable-image{position:relative;cursor:grab}
+    .rpt-logo-wrap img.resizable-image.selected{outline:2px solid #ff7043;outline-offset:2px}
+    .image-resize-handle{position:absolute;width:10px;height:10px;background:#ff7043;border:1px solid white;cursor:pointer;z-index:1000;display:none}
+    .image-resize-handle.nw{top:-5px;left:-5px;cursor:nwse-resize}
+    .image-resize-handle.ne{top:-5px;right:-5px;cursor:nesw-resize}
+    .image-resize-handle.sw{bottom:-5px;left:-5px;cursor:nesw-resize}
+    .image-resize-handle.se{bottom:-5px;right:-5px;cursor:nwse-resize}
+    .image-resize-handle.n{top:-5px;left:50%;transform:translateX(-50%);cursor:ns-resize}
+    .image-resize-handle.s{bottom:-5px;left:50%;transform:translateX(-50%);cursor:ns-resize}
+    .image-resize-handle.w{left:-5px;top:50%;transform:translateY(-50%);cursor:ew-resize}
+    .image-resize-handle.e{right:-5px;top:50%;transform:translateY(-50%);cursor:ew-resize}
+    .image-resize-handle.show{display:block}
+    .rpt-header{display:flex;align-items:flex-start;gap:var(--rpt-header-gap);margin-bottom:var(--rpt-header-gap);padding-bottom:10px;border-bottom:2px solid var(--rpt-color-border)}
+    .rpt-logo-wrap{flex:0 0 auto;width:var(--rpt-logo-w);min-height:20px;text-align:center;position:relative}
+    .rpt-logo-wrap img{width:var(--rpt-logo-w);height:var(--rpt-logo-h);object-fit:contain;display:block;margin:0 auto}
+    .rpt-logo-wrap.hidden-logo{display:none}
+    .rpt-header-center{flex:1 1 auto;text-align:var(--rpt-align)}
+    .rpt-group-name{margin:0;color:var(--rpt-color-title);font-size:var(--rpt-title-size);font-family:var(--rpt-title-font);font-weight:var(--rpt-title-weight);line-height:1.25}
+    .rpt-motto{margin:6px 0 0;font-size:var(--rpt-motto-size);color:var(--rpt-color-subtitle);font-style:italic}
+    .rpt-meta{margin-top:8px;font-size:calc(var(--rpt-footer-size));color:var(--rpt-color-header-text);line-height:1.5}
+    .rpt-meta-item{display:block}
+    .rpt-accent{height:3px;background:linear-gradient(90deg,#ff9800,#ffd54f,#ff9800);margin:8px 0 14px;border:none}
+    .rpt-subtitle{text-align:center;font-size:calc(var(--rpt-motto-size) + 1px);font-weight:700;margin:4px 0 2px;color:var(--rpt-color-subtitle)}
+    .rpt-section{margin-top:var(--rpt-section-gap)}
+    .rpt-section-title{margin:0 0 8px;padding-bottom:4px;border-bottom:1.5px solid var(--rpt-color-border);font-size:calc(var(--rpt-th-size) + 2px);font-weight:700;color:var(--rpt-color-section);page-break-after:avoid}
+    .rpt-table{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:6px;font-size:var(--rpt-td-size);font-family:var(--rpt-td-font)}
+    .rpt-table th{font-family:var(--rpt-th-font);font-size:var(--rpt-th-size);background:var(--rpt-color-th-bg);font-weight:700;padding:var(--rpt-header-pad);border:var(--rpt-border) solid var(--rpt-color-border);text-align:var(--rpt-h-align);vertical-align:var(--rpt-v-align);color:var(--rpt-color-th-text)}
+    .rpt-table td{padding:var(--rpt-cell-pad);border:var(--rpt-border) solid var(--rpt-color-border);height:var(--rpt-row-h);min-height:var(--rpt-min-row-h);text-align:var(--rpt-h-align);vertical-align:var(--rpt-v-align);word-wrap:break-word;overflow-wrap:anywhere;color:var(--rpt-color-body-text)}
+    .rpt-table tbody tr:nth-child(even){background:var(--rpt-color-alt-row)}
+    .rpt-table.no-borders th,.rpt-table.no-borders td{border:none;border-bottom:1px solid var(--rpt-color-border)}
+    .rpt-table .col-sr{width:var(--col-sr)}
+    .rpt-table .col-name{width:var(--col-name)}
+    .rpt-table .col-amt{width:var(--col-amt)}
+    .rpt-table .col-status{width:var(--col-status)}
+    .rpt-table .col-com-name{width:var(--col-com-name)}
+    .rpt-table .col-com-role{width:var(--col-com-role)}
+    .rpt-table .col-don-desc{width:var(--col-don-desc)}
+    .rpt-table .col-don-amt{width:var(--col-don-amt)}
+    .rpt-table .col-exp-cat{width:var(--col-exp-cat)}
+    .rpt-table .col-exp-amt{width:var(--col-exp-amt)}
+    .rpt-table .num{text-align:right;white-space:nowrap}
+    .rpt-table .center{text-align:center}
+    .rpt-table tfoot td,.rpt-total-row td{background:var(--rpt-color-th-bg);font-weight:700;color:var(--rpt-color-total)}
+    .rpt-summary-stats{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0 4px;font-size:var(--rpt-td-size)}
+    .rpt-signatures{margin-top:calc(var(--rpt-section-gap) + 10px);page-break-inside:avoid}
+    .rpt-sig-grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-around;margin-top:40px}
+    .rpt-sig-box{flex:1 1 140px;max-width:220px;text-align:center;font-size:var(--rpt-footer-size);color:var(--rpt-color-footer)}
+    .rpt-sig-line{border-top:1px solid #555;margin-top:48px;padding-top:6px}
+    .rpt-footer{margin-top:18px;font-size:var(--rpt-footer-size);color:var(--rpt-color-footer);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .rpt-blank{color:#888;font-style:italic}
+    .hidden-section{display:none !important}
+    details.settings-details > summary{cursor:pointer;font-weight:700;color:#bf360c;padding:6px 0}
+    .filter-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+    .filter-chips label{display:inline-flex;align-items:center;gap:4px;font-size:13px;margin:0}
 
-    /* Print-specific styles for a systematic PDF report */
     @media print {
-      @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@700&family=Lekton:wght@700&family=Modak&family=Mukta:wght@700&family=Ruwudu:wght@400..700&family=Tiro+Devanagari+Marathi&family=Yatra+One&display=swap');
-      
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+        /* Suppress page counter and other browser default headers/footers */
+        @top-left { content: none; }
+        @top-center { content: none; }
+        @top-right { content: none; }
+        @bottom-left { content: none; }
+        @bottom-center { content: none; }
+        @bottom-right { content: none; }
+        @top-left-corner { content: none; }
+        @top-right-corner { content: none; }
+        @bottom-left-corner { content: none; }
+        @bottom-right-corner { content: none; }
+      }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      html {
+        background: white !important;
+        color: black !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
       body {
         background: white !important;
         color: black !important;
-        font-size: 12pt;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        width: 100% !important;
+        height: auto !important;
       }
-      header, nav, #secRegister, #secLogin, #page-dashboard, #page-info, #page-members, #page-committee, #page-expenses, #page-signatures, #page-donations, .container > section > div:last-child {
-        display: none !important; /* Hide UI elements */
+      /* Hide chrome; keep ancestry of #printRoot displayable */
+      body > header,
+      #mainNav,
+      #secRegister,
+      #secLogin,
+      #reportControls,
+      .no-print,
+      .image-resize-handle,
+      #page-dashboard,
+      #page-info,
+      #page-members,
+      #page-committee,
+      #page-donations,
+      #page-expenses,
+      #page-signatures {
+        display: none !important;
       }
-      #secApp, #page-report {
+      #secApp, #page-report, .container, #reportPreviewFrame, #printRoot {
         display: block !important;
-        margin: 0; padding: 0; max-width: none;
-      }
-      .container {
-        margin: 0 auto; padding: 20px; max-width: 100%;
-      }
-      .card {
+        visibility: visible !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
         box-shadow: none !important;
-        border: 1px solid #ccc !important;
+        background: transparent !important;
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
       }
-      .report-group-name {
-        color: black !important; /* Black color for formal report */
+      #page-report.card {
+        border: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
-      th {
-          background-color: #f2f2f2 !important; /* Light grey for table headers */
-          -webkit-print-color-adjust: exact; /* Ensures background color prints */
-          color-adjust: exact;
+      .preview-frame{
+        border:none !important;
+        background:transparent !important;
+        padding:0 !important;
+        margin:0 !important;
+        max-height:none !important;
+        overflow:visible !important;
       }
-      tr, td, .row-item {
-        page-break-inside: avoid !important; /* Avoids breaking table rows across pages */
+      .report-sheet{
+        box-shadow:none !important;
+        max-width:none !important;
+        width:100% !important;
+        margin:0 !important;
+        padding:0 !important;
+        background: white !important;
       }
-      .report-section-header {
-        page-break-after: avoid !important;
-        page-break-before: auto !important;
-        border-bottom: 2px solid #999;
-        margin-top: 28px;
+      .rpt-header { 
+        display: flex !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
-      #reportSignatures {
+      .rpt-group-name{
+        color:#000 !important;
+        margin: 0 !important;
+      }
+      .rpt-table th{
+        background:#f2f2f2 !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+        margin: 0 !important;
+        padding: 8px !important;
+      }
+      .rpt-table td{
+        margin: 0 !important;
+        padding: 6px !important;
+      }
+      .rpt-table tfoot td,.rpt-total-row td{
+        background:#eee !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+      }
+      thead{display:table-header-group !important}
+      tfoot{display:table-footer-group !important}
+      tr, .rpt-sig-box, .rpt-section-title { 
+        break-inside: avoid !important;
         page-break-inside: avoid !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
+      .rpt-section{
+        break-inside:auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .rpt-signatures{
+        break-inside:avoid !important;
+        page-break-inside:avoid !important;
+      }
+      body.print-members #sec-full-only,
+      body.print-members .sec-full-only { display:none !important; }
+      body.print-full #sec-members-only-note { display:none !important; }
+      /* Suppress browser-generated elements */
+      #printRoot { break-after: auto !important; }
     }
 
-    @media (max-width:720px){ .row{flex-direction:column} .logo-row{flex-direction:column;align-items:flex-start} }
+    @media (max-width:720px){ .row{flex-direction:column} .logo-row{flex-direction:column;align-items:flex-start} .settings-grid{grid-template-columns:1fr} }
   </style>
+  <style id="dynamicPrintPage"></style>
 </head>
 <body>
   <header>
@@ -337,43 +532,270 @@
         </div>
       </section>
 
-      <section id="page-report" class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <div style="flex: 1 1 0;">
-                <img id="reportGroupLogo" class="logo-preview" src="" alt="Group Logo" />
+      <section id="page-report" class="card" style="display:none">
+        <div id="reportControls" class="no-print">
+          <h3 style="margin-top:0">📑 अहवाल / Report</h3>
+          <p class="muted">वर्षनिहाय सदस्य वर्गणी आणि संपूर्ण वार्षिक अहवाल. Marathi Unicode साठी Print → Save as PDF वापरा. <strong>PDF सेव करताना "Margins" सेटिंग "None" किंवा "Minimal" निवडा.</strong></p>
+
+          <div class="no-print" style="background:#fff3cd; padding:12px; border-radius:6px; margin-bottom:12px; border-left:4px solid #ff9800; font-size:13px; color:#333;">
+            <strong>PDF सेव करण्याचे सूचना:</strong><br/>
+            ✓ "Print → Save as PDF" क्लिक करा<br/>
+            ✓ More Settings → Margins → "None" निवडा<br/>
+            ✓ Headers and footers अक्षम करा<br/>
+            ✓ "Save" किंवा "Print" क्लिक करा
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary" onclick="previewReport()">Preview Report</button>
+            <button class="btn-accent" onclick="downloadMembersVarganiPDF()">Download Year-wise Members &amp; Vargani PDF</button>
+            <button class="btn-accent" onclick="previewJamaReport()">जमा अहवाल / Income Report</button>
+            <button class="btn-accent" onclick="downloadJamaPDF()">Download जमा PDF</button>
+            <button class="btn-accent" onclick="previewKharchReport()">खर्च अहवाल / Expense Report</button>
+            <button class="btn-accent" onclick="downloadKharchPDF()">Download खर्च PDF</button>
+            <button class="btn-accent" onclick="downloadCompleteAnnualPDF()">Download Complete Annual Report PDF</button>
+            <button class="btn-primary" onclick="printSaveAsPDF()">Print / Save as PDF</button>
+            <button class="btn-outline" onclick="toggleReportSettings()">Preview / Report Settings</button>
+            <button class="btn-secondary" onclick="resetReportCustomization()">Reset Report Customization</button>
+            <button class="btn-secondary" onclick="navOpen('dashboard')">Back</button>
+          </div>
+
+          <div class="filter-chips">
+            <strong>सदस्य फिल्टर:</strong>
+            <label><input type="radio" name="memberFilter" value="all" checked onchange="onMemberFilterChange()"> सर्व सदस्य</label>
+            <label><input type="radio" name="memberFilter" value="withAmount" onchange="onMemberFilterChange()"> रक्कम नोंद असलेले</label>
+            <label><input type="radio" name="memberFilter" value="blank" onchange="onMemberFilterChange()"> रक्कम रिकामी / शून्य</label>
+          </div>
+
+          <div class="row" style="margin-top:8px">
+            <div class="col"><label>Report Subtitle (optional)</label><input id="rptSubtitle" placeholder="उदा. वार्षिक अहवाल" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+            <div class="col"><label>Active report type (preview)</label>
+              <select id="rptPreviewType" onchange="onReportSettingChange()">
+                <option value="full">Complete Annual Report</option>
+                <option value="members">Members &amp; Vargani only</option>
+              </select>
             </div>
-            <div style="flex: 2 1 0; text-align: center;">
-                <h2 id="reportTitle" style="margin: 0 0 4px 0;"></h2>
-                <div id="reportMoto" class="muted"></div>
-                <div id="reportMeta" class="muted"></div>
+          </div>
+
+          <details id="reportSettingsPanel" class="settings-details settings-panel" open>
+            <summary>Report Design &amp; Layout Settings</summary>
+
+            <h4>A. Font customization</h4>
+            <div class="settings-grid">
+              <div><label>Report title font</label>
+                <select id="rptTitleFont" onchange="onReportSettingChange()"></select></div>
+              <div><label>Marathi body font</label>
+                <select id="rptBodyFont" onchange="onReportSettingChange()"></select></div>
+              <div><label>Table header font</label>
+                <select id="rptThFont" onchange="onReportSettingChange()"></select></div>
+              <div><label>Table body font</label>
+                <select id="rptTdFont" onchange="onReportSettingChange()"></select></div>
+              <div><label>Title font size (px)</label><input id="rptTitleSize" type="number" min="14" max="48" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Subtitle / motto size (px)</label><input id="rptMottoSize" type="number" min="10" max="28" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table header size (px)</label><input id="rptThSize" type="number" min="8" max="20" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table body size (px)</label><input id="rptTdSize" type="number" min="8" max="18" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Footer / signature size (px)</label><input id="rptFooterSize" type="number" min="8" max="16" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Title weight</label>
+                <select id="rptTitleWeight" onchange="onReportSettingChange()">
+                  <option value="700">Bold</option>
+                  <option value="400">Normal</option>
+                </select></div>
             </div>
-            <div style="flex: 1 1 0; text-align: right;">
-                <img id="reportGanpatiLogo" class="logo-preview" src="" alt="Ganpati Logo" />
+
+            <h4>Header branding</h4>
+            <div class="settings-grid">
+              <div><label>Header alignment</label>
+                <select id="rptHeaderAlign" onchange="onReportSettingChange()">
+                  <option value="center">Centre</option>
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                </select></div>
+              <div><label>Logo width (px)</label><input id="rptLogoW" type="number" min="40" max="160" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Logo height (px)</label><input id="rptLogoH" type="number" min="40" max="160" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Header spacing (px)</label><input id="rptHeaderGap" type="number" min="4" max="40" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
             </div>
+
+            <h4>B. Column widths (%)</h4>
+            <div class="settings-grid">
+              <div><label>Serial no. column</label><input id="rptColSr" type="range" min="4" max="20" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Member name column</label><input id="rptColName" type="range" min="20" max="70" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Annual contribution column</label><input id="rptColAmt" type="range" min="10" max="40" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Payment status column</label><input id="rptColStatus" type="range" min="10" max="30" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Committee name column</label><input id="rptColComName" type="range" min="30" max="70" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Committee designation column</label><input id="rptColComRole" type="range" min="20" max="60" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Donation description column</label><input id="rptColDonDesc" type="range" min="20" max="60" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Donation amount column</label><input id="rptColDonAmt" type="range" min="10" max="40" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Expense category column</label><input id="rptColExpCat" type="range" min="40" max="85" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+              <div><label>Expense amount column</label><input id="rptColExpAmt" type="range" min="15" max="50" oninput="onReportSettingChange(); syncRangeLabel(this)"/><span class="muted range-val"></span></div>
+            </div>
+
+            <h4>C. Row height &amp; cell spacing</h4>
+            <div class="settings-grid">
+              <div><label>Table row height (px)</label><input id="rptRowH" type="number" min="18" max="60" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Minimum row height (px)</label><input id="rptMinRowH" type="number" min="16" max="50" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Cell padding (px)</label><input id="rptCellPad" type="number" min="2" max="16" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Vertical cell alignment</label>
+                <select id="rptVAlign" onchange="onReportSettingChange()">
+                  <option value="middle">Middle</option>
+                  <option value="top">Top</option>
+                  <option value="bottom">Bottom</option>
+                </select></div>
+              <div><label>Horizontal cell alignment</label>
+                <select id="rptHAlign" onchange="onReportSettingChange()">
+                  <option value="left">Left</option>
+                  <option value="center">Centre</option>
+                  <option value="right">Right</option>
+                </select></div>
+              <div><label>Border thickness (px)</label><input id="rptBorder" type="number" min="0" max="4" step="0.5" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table borders</label>
+                <select id="rptShowBorders" onchange="onReportSettingChange()">
+                  <option value="1">Visible</option>
+                  <option value="0">Hidden</option>
+                </select></div>
+              <div><label>Header row padding (px)</label><input id="rptHeaderPad" type="number" min="2" max="16" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Space between sections (px)</label><input id="rptSectionGap" type="number" min="8" max="48" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+            </div>
+
+            <h4>D. Page layout</h4>
+            <div class="settings-grid">
+              <div><label>Page orientation</label>
+                <select id="rptOrientation" onchange="onReportSettingChange()">
+                  <option value="portrait">A4 Portrait</option>
+                  <option value="landscape">A4 Landscape</option>
+                </select></div>
+              <div><label>Margin top (mm)</label><input id="rptMarTop" type="number" min="5" max="30" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Margin bottom (mm)</label><input id="rptMarBottom" type="number" min="5" max="30" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Margin left (mm)</label><input id="rptMarLeft" type="number" min="5" max="30" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Margin right (mm)</label><input id="rptMarRight" type="number" min="5" max="30" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Repeat table header on pages</label>
+                <select id="rptRepeatHeader" onchange="onReportSettingChange()">
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select></div>
+              <div><label>Show date footer</label>
+                <select id="rptShowDate" onchange="onReportSettingChange()">
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select></div>
+              <div><label>Show signature area</label>
+                <select id="rptShowSig" onchange="onReportSettingChange()">
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select></div>
+            </div>
+
+            <h4>E. Report Colors & Customization</h4>
+            <div class="settings-grid">
+              <div><label>Report Title Color</label><input id="colorTitleText" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Subtitle / Motto Color</label><input id="colorSubtitleText" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Header Background</label><input id="colorHeaderBg" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Header Text Color</label><input id="colorHeaderText" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table Header Background</label><input id="colorTableHeaderBg" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table Header Text</label><input id="colorTableHeaderText" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table Body Text</label><input id="colorTableBodyText" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Table Border Color</label><input id="colorTableBorder" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Alternate Row Background</label><input id="colorAlternateRow" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Section Heading Color</label><input id="colorSectionHeading" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Total Amount Color</label><input id="colorTotalAmount" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Footer & Signature Color</label><input id="colorFooterText" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Report Background</label><input id="colorReportBg" type="color" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+            </div>
+
+            <h4>F. Image Sizing</h4>
+            <div class="settings-grid">
+              <div><label>Group Logo Width (px)</label><input id="imageGroupLogoW" type="number" min="20" max="200" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Group Logo Height (px)</label><input id="imageGroupLogoH" type="number" min="20" max="200" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Ganpati Logo Width (px)</label><input id="imageGanpatiLogoW" type="number" min="20" max="200" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+              <div><label>Ganpati Logo Height (px)</label><input id="imageGanpatiLogoH" type="number" min="20" max="200" oninput="onReportSettingChange()" onchange="onReportSettingChange()"/></div>
+            </div>
+
+            <div style="margin-top:12px">
+              <button class="btn-primary small" onclick="resetToDefaultColors()">Reset to Default Colors</button>
+              <button class="btn-secondary small" onclick="resetImageSizes()">Reset Image Sizes</button>
+            </div>
+
+            <p class="muted" style="margin-top:10px">Settings are saved per logged-in group and do not change member/donation/expense data.</p>
+          </details>
         </div>
 
-        <h4 class="report-section-header">कार्यकारी समिती</h4>
-        <table id="reportCommittee"><thead><tr><th>नाव</th><th>पद</th></tr></thead><tbody></tbody></table>
+        <div class="preview-frame" id="reportPreviewFrame">
+          <div id="printRoot">
+            <article id="reportSheet" class="report-sheet">
+              <header class="rpt-header">
+                <div class="rpt-logo-wrap" id="rptGroupLogoWrap">
+                  <img id="reportGroupLogo" src="" alt="Group Logo"/>
+                </div>
+                <div class="rpt-header-center">
+                  <h1 class="rpt-group-name" id="reportTitle"></h1>
+                  <div class="rpt-motto" id="reportMoto"></div>
+                  <div class="rpt-subtitle" id="reportSubtitleDisplay"></div>
+                  <div class="rpt-meta" id="reportMeta"></div>
+                </div>
+                <div class="rpt-logo-wrap" id="rptGanpatiLogoWrap">
+                  <img id="reportGanpatiLogo" src="" alt="Ganpati Logo"/>
+                </div>
+              </header>
+              <hr class="rpt-accent"/>
 
-        <h4 class="report-section-header">आर्थिक सारांश</h4>
-        <table id="reportMembersSummary"><thead><tr><th>वर्णन</th><th>रक्कम (₹)</th></tr></thead><tbody></tbody></table>
-        
-        <h4 class="report-section-header">देणगी (Donations)</h4>
-        <table id="reportDonations"><thead><tr><th>देणगीदार</th><th>देणगी (वस्तू / रक्कम)</th><th>मूल्य (₹)</th></tr></thead><tbody></tbody></table>
+              <section class="rpt-section" id="secMembersVargani">
+                <h3 class="rpt-section-title">वर्षनिहाय सदस्य व वर्गणी अहवाल</h3>
+                <div class="rpt-summary-stats" id="membersVarganiStats"></div>
+                <table class="rpt-table" id="reportMembersVargani">
+                  <thead>
+                    <tr>
+                      <th class="col-sr center">अ. क्र.</th>
+                      <th class="col-name">सदस्याचे नाव</th>
+                      <th class="col-amt num">वार्षिक वर्गणी (₹)</th>
+                      <th class="col-status">स्थिती</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <tfoot></tfoot>
+                </table>
+              </section>
 
-        <h4 class="report-section-header">खर्च</h4>
-        <table id="reportExpenses"><thead><tr><th>खर्च गट</th><th>रक्कम (₹)</th></tr></thead><tbody></tbody></table>
+              <section class="rpt-section sec-full-only" id="secCommittee">
+                <h3 class="rpt-section-title">कार्यकारी समिती</h3>
+                <table class="rpt-table" id="reportCommittee">
+                  <thead><tr><th class="col-com-name">नाव</th><th class="col-com-role">पद</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </section>
 
-        <h4 class="report-section-header">स्वाक्षऱ्या</h4>
-        <table id="reportSignatures" style="margin-top: 25px; border: none;">
-            <tbody></tbody>
-        </table>
-        
-        <div id="reportGeneratedDate" class="muted" style="text-align: right; margin-top: 20px; font-size: 12px;"></div>
+              <section class="rpt-section sec-full-only" id="secFinancial">
+                <h3 class="rpt-section-title">आर्थिक सारांश</h3>
+                <table class="rpt-table" id="reportMembersSummary">
+                  <thead><tr><th>वर्णन</th><th class="col-exp-amt num">रक्कम (₹)</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </section>
 
-        <div style="margin-top:12px">
-          <button class="btn-primary" onclick="window.print()">Print / Save PDF</button>
-          <button class="btn-secondary" onclick="navOpen('dashboard')">Back</button>
+              <section class="rpt-section sec-full-only" id="secDonations">
+                <h3 class="rpt-section-title">देणगी (Donations)</h3>
+                <table class="rpt-table" id="reportDonations">
+                  <thead><tr><th>देणगीदार</th><th class="col-don-desc">देणगी (वस्तू / रक्कम)</th><th class="col-don-amt num">मूल्य (₹)</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </section>
+
+              <section class="rpt-section sec-full-only" id="secExpenses">
+                <h3 class="rpt-section-title">खर्च</h3>
+                <table class="rpt-table" id="reportExpenses">
+                  <thead><tr><th class="col-exp-cat">खर्च गट</th><th class="col-exp-amt num">रक्कम (₹)</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </section>
+
+              <section class="rpt-signatures" id="secSignatures">
+                <h3 class="rpt-section-title">स्वाक्षऱ्या</h3>
+                <div class="rpt-sig-grid" id="reportSignatures"></div>
+              </section>
+
+              <footer class="rpt-footer" id="reportFooter">
+                <div id="reportGeneratedDate"></div>
+                <div id="reportPageHint" class="muted">Print → Save as PDF</div>
+              </footer>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -430,7 +852,19 @@ function navOpen(page){
   if(page==='donations') renderDonations();
   if(page==='expenses') renderExpensesUI();
   if(page==='signatures') renderSignRolesList();
-  if(page==='report') renderReport();
+  if(page==='report') {
+    const design = loadReportDesign('shared');
+    // Sync report title font from Group Info font if user has not customized away from default storage
+    users = JSON.parse(localStorage.getItem('users')||'{}');
+    const rec = users[currentUser] && users[currentUser].records && users[currentUser].records[currentYear];
+    if(rec && rec.group && rec.group.fontStyle && !localStorage.getItem(getReportPrefsKey('shared'))){
+      design.titleFont = rec.group.fontStyle;
+    }
+    populateReportSettingsUI(design);
+    applyReportDesignToSheet(design);
+    setReportMode(design.previewType || 'full');
+    renderReport();
+  }
 }
 function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
@@ -491,6 +925,7 @@ function populateYearSelect(){
   sel.onchange = function(){ currentYear = sel.value;
     if(currentUser) loadYear(currentYear);
     renderMasterAndYearMembers();
+    if($('page-report') && $('page-report').style.display !== 'none') renderReport();
   }
 }
 
@@ -971,145 +1406,1214 @@ function removeSignRole(i){
   renderSignRolesList();
 }
 
+/* ========== Report design preferences (per group) ========== */
+const REPORT_FONT_OPTIONS = [
+  { value: "'Baloo Bhai 2', 'Noto Sans Devanagari', sans-serif", label: "Baloo Bhai 2" },
+  { value: "'Mukta', 'Noto Sans Devanagari', sans-serif", label: "Mukta" },
+  { value: "'Noto Sans Devanagari', 'Mukta', sans-serif", label: "Noto Sans Devanagari" },
+  { value: "'Tiro Devanagari Marathi', 'Noto Sans Devanagari', serif", label: "Tiro Devanagari Marathi" },
+  { value: "'Modak', 'Noto Sans Devanagari', cursive", label: "Modak" },
+  { value: "'Yatra One', 'Noto Sans Devanagari', cursive", label: "Yatra One" },
+  { value: "'Ruwudu', 'Noto Sans Devanagari', serif", label: "Ruwudu" },
+  { value: "'Lekton', 'Noto Sans Devanagari', sans-serif", label: "Lekton" }
+];
+
+const DEFAULT_REPORT_DESIGN = {
+  titleFont: "'Baloo Bhai 2', 'Noto Sans Devanagari', sans-serif",
+  bodyFont: "'Mukta', 'Noto Sans Devanagari', sans-serif",
+  thFont: "'Mukta', 'Noto Sans Devanagari', sans-serif",
+  tdFont: "'Noto Sans Devanagari', 'Mukta', sans-serif",
+  titleSize: 28,
+  mottoSize: 14,
+  thSize: 12,
+  tdSize: 11,
+  footerSize: 11,
+  titleWeight: "700",
+  headerAlign: "center",
+  logoW: 80,
+  logoH: 80,
+  headerGap: 12,
+  colSr: 8,
+  colName: 50,
+  colAmt: 22,
+  colStatus: 20,
+  colComName: 55,
+  colComRole: 45,
+  colDonDesc: 40,
+  colDonAmt: 20,
+  colExpCat: 70,
+  colExpAmt: 30,
+  rowH: 28,
+  minRowH: 24,
+  cellPad: 6,
+  vAlign: "middle",
+  hAlign: "left",
+  border: 1,
+  showBorders: "1",
+  headerPad: 8,
+  sectionGap: 20,
+  orientation: "portrait",
+  marTop: 12,
+  marBottom: 12,
+  marLeft: 12,
+  marRight: 12,
+  repeatHeader: "1",
+  showDate: "1",
+  showSig: "1",
+  subtitle: "",
+  previewType: "full",
+  memberFilter: "all",
+  // Color customization properties
+  colorTitleText: "#c45c00",
+  colorSubtitleText: "#444444",
+  colorHeaderBg: "transparent",
+  colorHeaderText: "#333333",
+  colorTableHeaderBg: "#fff8e1",
+  colorTableHeaderText: "#000000",
+  colorTableBodyText: "#222222",
+  colorTableBorder: "#e0d0a8",
+  colorAlternateRow: "#fffdf8",
+  colorSectionHeading: "#5d4037",
+  colorTotalAmount: "#c45c00",
+  colorFooterText: "#555555",
+  colorReportBg: "#ffffff",
+  // Image dimensions
+  imageGroupLogoW: 80,
+  imageGroupLogoH: 80,
+  imageGanpatiLogoW: 80,
+  imageGanpatiLogoH: 80
+};
+
+let activePrintMode = "full"; // full | members
+let reportSettingsOpen = true;
+
+function getReportPrefsKey(kind){
+  return `reportDesign_${currentUser}_${kind || 'shared'}`;
+}
+
+function loadReportDesign(kind){
+  if(!currentUser) return Object.assign({}, DEFAULT_REPORT_DESIGN);
+  const raw = localStorage.getItem(getReportPrefsKey(kind || 'shared'));
+  if(!raw) return Object.assign({}, DEFAULT_REPORT_DESIGN);
+  try {
+    return Object.assign({}, DEFAULT_REPORT_DESIGN, JSON.parse(raw));
+  } catch(e){
+    return Object.assign({}, DEFAULT_REPORT_DESIGN);
+  }
+}
+
+function saveReportDesign(design, kind){
+  if(!currentUser) return;
+  const safe = Object.assign({}, DEFAULT_REPORT_DESIGN, design || {});
+  localStorage.setItem(getReportPrefsKey(kind || 'shared'), JSON.stringify(safe));
+  // also keep type-specific copies when practical
+  if(!kind || kind === 'shared'){
+    localStorage.setItem(getReportPrefsKey('full'), JSON.stringify(safe));
+    localStorage.setItem(getReportPrefsKey('members'), JSON.stringify(safe));
+  }
+}
+
+function fillFontSelect(sel, selected){
+  if(!sel) return;
+  sel.innerHTML = REPORT_FONT_OPTIONS.map(o =>
+    `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`
+  ).join('');
+  sel.value = selected;
+  if(sel.selectedIndex < 0 && REPORT_FONT_OPTIONS[0]) sel.value = REPORT_FONT_OPTIONS[0].value;
+}
+
+function syncRangeLabel(input){
+  if(!input) return;
+  const span = input.parentElement && input.parentElement.querySelector('.range-val');
+  if(span) span.textContent = input.value + '%';
+}
+
+function populateReportSettingsUI(design){
+  const d = Object.assign({}, DEFAULT_REPORT_DESIGN, design || {});
+  fillFontSelect($('rptTitleFont'), d.titleFont);
+  fillFontSelect($('rptBodyFont'), d.bodyFont);
+  fillFontSelect($('rptThFont'), d.thFont);
+  fillFontSelect($('rptTdFont'), d.tdFont);
+  $('rptTitleSize').value = d.titleSize;
+  $('rptMottoSize').value = d.mottoSize;
+  $('rptThSize').value = d.thSize;
+  $('rptTdSize').value = d.tdSize;
+  $('rptFooterSize').value = d.footerSize;
+  $('rptTitleWeight').value = d.titleWeight;
+  $('rptHeaderAlign').value = d.headerAlign;
+  $('rptLogoW').value = d.logoW;
+  $('rptLogoH').value = d.logoH;
+  $('rptHeaderGap').value = d.headerGap;
+  $('rptColSr').value = d.colSr;
+  $('rptColName').value = d.colName;
+  $('rptColAmt').value = d.colAmt;
+  $('rptColStatus').value = d.colStatus;
+  $('rptColComName').value = d.colComName;
+  $('rptColComRole').value = d.colComRole;
+  $('rptColDonDesc').value = d.colDonDesc;
+  $('rptColDonAmt').value = d.colDonAmt;
+  $('rptColExpCat').value = d.colExpCat;
+  $('rptColExpAmt').value = d.colExpAmt;
+  $('rptRowH').value = d.rowH;
+  $('rptMinRowH').value = d.minRowH;
+  $('rptCellPad').value = d.cellPad;
+  $('rptVAlign').value = d.vAlign;
+  $('rptHAlign').value = d.hAlign;
+  $('rptBorder').value = d.border;
+  $('rptShowBorders').value = d.showBorders;
+  $('rptHeaderPad').value = d.headerPad;
+  $('rptSectionGap').value = d.sectionGap;
+  $('rptOrientation').value = d.orientation;
+  $('rptMarTop').value = d.marTop;
+  $('rptMarBottom').value = d.marBottom;
+  $('rptMarLeft').value = d.marLeft;
+  $('rptMarRight').value = d.marRight;
+  $('rptRepeatHeader').value = d.repeatHeader;
+  $('rptShowDate').value = d.showDate;
+  $('rptShowSig').value = d.showSig;
+  $('rptSubtitle').value = d.subtitle || '';
+  $('rptPreviewType').value = d.previewType || 'full';
+  document.querySelectorAll('input[name="memberFilter"]').forEach(r => {
+    r.checked = r.value === (d.memberFilter || 'all');
+  });
+  ['rptColSr','rptColName','rptColAmt','rptColStatus','rptColComName','rptColComRole','rptColDonDesc','rptColDonAmt','rptColExpCat','rptColExpAmt']
+    .forEach(id => syncRangeLabel($(id)));
+  
+  // Color pickers
+  $('colorTitleText').value = d.colorTitleText;
+  $('colorSubtitleText').value = d.colorSubtitleText;
+  $('colorHeaderBg').value = d.colorHeaderBg;
+  $('colorHeaderText').value = d.colorHeaderText;
+  $('colorTableHeaderBg').value = d.colorTableHeaderBg;
+  $('colorTableHeaderText').value = d.colorTableHeaderText;
+  $('colorTableBodyText').value = d.colorTableBodyText;
+  $('colorTableBorder').value = d.colorTableBorder;
+  $('colorAlternateRow').value = d.colorAlternateRow;
+  $('colorSectionHeading').value = d.colorSectionHeading;
+  $('colorTotalAmount').value = d.colorTotalAmount;
+  $('colorFooterText').value = d.colorFooterText;
+  $('colorReportBg').value = d.colorReportBg;
+  
+  // Image dimensions
+  $('imageGroupLogoW').value = d.imageGroupLogoW;
+  $('imageGroupLogoH').value = d.imageGroupLogoH;
+  $('imageGanpatiLogoW').value = d.imageGanpatiLogoW;
+  $('imageGanpatiLogoH').value = d.imageGanpatiLogoH;
+}
+
+function readReportSettingsFromUI(){
+  const filterEl = document.querySelector('input[name="memberFilter"]:checked');
+  return {
+    titleFont: $('rptTitleFont').value,
+    bodyFont: $('rptBodyFont').value,
+    thFont: $('rptThFont').value,
+    tdFont: $('rptTdFont').value,
+    titleSize: parseFloat($('rptTitleSize').value) || DEFAULT_REPORT_DESIGN.titleSize,
+    mottoSize: parseFloat($('rptMottoSize').value) || DEFAULT_REPORT_DESIGN.mottoSize,
+    thSize: parseFloat($('rptThSize').value) || DEFAULT_REPORT_DESIGN.thSize,
+    tdSize: parseFloat($('rptTdSize').value) || DEFAULT_REPORT_DESIGN.tdSize,
+    footerSize: parseFloat($('rptFooterSize').value) || DEFAULT_REPORT_DESIGN.footerSize,
+    titleWeight: $('rptTitleWeight').value,
+    headerAlign: $('rptHeaderAlign').value,
+    logoW: parseFloat($('rptLogoW').value) || DEFAULT_REPORT_DESIGN.logoW,
+    logoH: parseFloat($('rptLogoH').value) || DEFAULT_REPORT_DESIGN.logoH,
+    headerGap: parseFloat($('rptHeaderGap').value) || DEFAULT_REPORT_DESIGN.headerGap,
+    colSr: parseFloat($('rptColSr').value) || DEFAULT_REPORT_DESIGN.colSr,
+    colName: parseFloat($('rptColName').value) || DEFAULT_REPORT_DESIGN.colName,
+    colAmt: parseFloat($('rptColAmt').value) || DEFAULT_REPORT_DESIGN.colAmt,
+    colStatus: parseFloat($('rptColStatus').value) || DEFAULT_REPORT_DESIGN.colStatus,
+    colComName: parseFloat($('rptColComName').value) || DEFAULT_REPORT_DESIGN.colComName,
+    colComRole: parseFloat($('rptColComRole').value) || DEFAULT_REPORT_DESIGN.colComRole,
+    colDonDesc: parseFloat($('rptColDonDesc').value) || DEFAULT_REPORT_DESIGN.colDonDesc,
+    colDonAmt: parseFloat($('rptColDonAmt').value) || DEFAULT_REPORT_DESIGN.colDonAmt,
+    colExpCat: parseFloat($('rptColExpCat').value) || DEFAULT_REPORT_DESIGN.colExpCat,
+    colExpAmt: parseFloat($('rptColExpAmt').value) || DEFAULT_REPORT_DESIGN.colExpAmt,
+    rowH: parseFloat($('rptRowH').value) || DEFAULT_REPORT_DESIGN.rowH,
+    minRowH: parseFloat($('rptMinRowH').value) || DEFAULT_REPORT_DESIGN.minRowH,
+    cellPad: parseFloat($('rptCellPad').value) || DEFAULT_REPORT_DESIGN.cellPad,
+    vAlign: $('rptVAlign').value,
+    hAlign: $('rptHAlign').value,
+    border: parseFloat($('rptBorder').value),
+    showBorders: $('rptShowBorders').value,
+    headerPad: parseFloat($('rptHeaderPad').value) || DEFAULT_REPORT_DESIGN.headerPad,
+    sectionGap: parseFloat($('rptSectionGap').value) || DEFAULT_REPORT_DESIGN.sectionGap,
+    orientation: $('rptOrientation').value,
+    marTop: parseFloat($('rptMarTop').value) || DEFAULT_REPORT_DESIGN.marTop,
+    marBottom: parseFloat($('rptMarBottom').value) || DEFAULT_REPORT_DESIGN.marBottom,
+    marLeft: parseFloat($('rptMarLeft').value) || DEFAULT_REPORT_DESIGN.marLeft,
+    marRight: parseFloat($('rptMarRight').value) || DEFAULT_REPORT_DESIGN.marRight,
+    repeatHeader: $('rptRepeatHeader').value,
+    showDate: $('rptShowDate').value,
+    showSig: $('rptShowSig').value,
+    subtitle: $('rptSubtitle').value.trim(),
+    previewType: $('rptPreviewType').value,
+    memberFilter: filterEl ? filterEl.value : 'all',
+    colorTitleText: $('colorTitleText').value,
+    colorSubtitleText: $('colorSubtitleText').value,
+    colorHeaderBg: $('colorHeaderBg').value,
+    colorHeaderText: $('colorHeaderText').value,
+    colorTableHeaderBg: $('colorTableHeaderBg').value,
+    colorTableHeaderText: $('colorTableHeaderText').value,
+    colorTableBodyText: $('colorTableBodyText').value,
+    colorTableBorder: $('colorTableBorder').value,
+    colorAlternateRow: $('colorAlternateRow').value,
+    colorSectionHeading: $('colorSectionHeading').value,
+    colorTotalAmount: $('colorTotalAmount').value,
+    colorFooterText: $('colorFooterText').value,
+    colorReportBg: $('colorReportBg').value,
+    imageGroupLogoW: parseFloat($('imageGroupLogoW').value) || DEFAULT_REPORT_DESIGN.imageGroupLogoW,
+    imageGroupLogoH: parseFloat($('imageGroupLogoH').value) || DEFAULT_REPORT_DESIGN.imageGroupLogoH,
+    imageGanpatiLogoW: parseFloat($('imageGanpatiLogoW').value) || DEFAULT_REPORT_DESIGN.imageGanpatiLogoW,
+    imageGanpatiLogoH: parseFloat($('imageGanpatiLogoH').value) || DEFAULT_REPORT_DESIGN.imageGanpatiLogoH
+  };
+}
+
+function applyReportDesignToSheet(design){
+  const d = Object.assign({}, DEFAULT_REPORT_DESIGN, design || {});
+  const sheet = $('reportSheet');
+  if(!sheet) return;
+  sheet.style.setProperty('--rpt-title-font', d.titleFont);
+  sheet.style.setProperty('--rpt-body-font', d.bodyFont);
+  sheet.style.setProperty('--rpt-th-font', d.thFont);
+  sheet.style.setProperty('--rpt-td-font', d.tdFont);
+  sheet.style.setProperty('--rpt-title-size', d.titleSize + 'px');
+  sheet.style.setProperty('--rpt-motto-size', d.mottoSize + 'px');
+  sheet.style.setProperty('--rpt-th-size', d.thSize + 'px');
+  sheet.style.setProperty('--rpt-td-size', d.tdSize + 'px');
+  sheet.style.setProperty('--rpt-footer-size', d.footerSize + 'px');
+  sheet.style.setProperty('--rpt-title-weight', d.titleWeight);
+  sheet.style.setProperty('--rpt-logo-w', d.logoW + 'px');
+  sheet.style.setProperty('--rpt-logo-h', d.logoH + 'px');
+  sheet.style.setProperty('--rpt-header-gap', d.headerGap + 'px');
+  sheet.style.setProperty('--rpt-row-h', d.rowH + 'px');
+  sheet.style.setProperty('--rpt-min-row-h', d.minRowH + 'px');
+  sheet.style.setProperty('--rpt-cell-pad', d.cellPad + 'px');
+  sheet.style.setProperty('--rpt-header-pad', d.headerPad + 'px');
+  sheet.style.setProperty('--rpt-border', (d.border || 0) + 'px');
+  sheet.style.setProperty('--rpt-section-gap', d.sectionGap + 'px');
+  sheet.style.setProperty('--rpt-align', d.headerAlign);
+  sheet.style.setProperty('--rpt-v-align', d.vAlign);
+  sheet.style.setProperty('--rpt-h-align', d.hAlign);
+  sheet.style.setProperty('--col-sr', d.colSr + '%');
+  sheet.style.setProperty('--col-name', d.colName + '%');
+  sheet.style.setProperty('--col-amt', d.colAmt + '%');
+  sheet.style.setProperty('--col-status', d.colStatus + '%');
+  sheet.style.setProperty('--col-com-name', d.colComName + '%');
+  sheet.style.setProperty('--col-com-role', d.colComRole + '%');
+  sheet.style.setProperty('--col-don-desc', d.colDonDesc + '%');
+  sheet.style.setProperty('--col-don-amt', d.colDonAmt + '%');
+  sheet.style.setProperty('--col-exp-cat', d.colExpCat + '%');
+  sheet.style.setProperty('--col-exp-amt', d.colExpAmt + '%');
+  
+  // Apply colors
+  sheet.style.setProperty('--rpt-color-title', d.colorTitleText);
+  sheet.style.setProperty('--rpt-color-subtitle', d.colorSubtitleText);
+  sheet.style.setProperty('--rpt-color-header-bg', d.colorHeaderBg);
+  sheet.style.setProperty('--rpt-color-header-text', d.colorHeaderText);
+  sheet.style.setProperty('--rpt-color-th-bg', d.colorTableHeaderBg);
+  sheet.style.setProperty('--rpt-color-th-text', d.colorTableHeaderText);
+  sheet.style.setProperty('--rpt-color-body-text', d.colorTableBodyText);
+  sheet.style.setProperty('--rpt-color-border', d.colorTableBorder);
+  sheet.style.setProperty('--rpt-color-alt-row', d.colorAlternateRow);
+  sheet.style.setProperty('--rpt-color-section', d.colorSectionHeading);
+  sheet.style.setProperty('--rpt-color-total', d.colorTotalAmount);
+  sheet.style.setProperty('--rpt-color-footer', d.colorFooterText);
+  sheet.style.setProperty('--rpt-color-bg', d.colorReportBg);
+  
+  // Apply logo dimensions
+  sheet.style.setProperty('--rpt-logo-w', (d.imageGroupLogoW || d.logoW) + 'px');
+  sheet.style.setProperty('--rpt-logo-h', (d.imageGroupLogoH || d.logoH) + 'px');
+  
+  sheet.classList.toggle('landscape-preview', d.orientation === 'landscape');
+  sheet.querySelectorAll('.rpt-table').forEach(t => {
+    t.classList.toggle('no-borders', String(d.showBorders) === '0');
+  });
+  const dyn = $('dynamicPrintPage');
+  if(dyn){
+    dyn.textContent = `@media print { 
+      @page { 
+        size: A4 ${d.orientation}; 
+        margin: ${d.marTop}mm ${d.marRight}mm ${d.marBottom}mm ${d.marLeft}mm;
+        @top-left { content: none; }
+        @top-center { content: none; }
+        @top-right { content: none; }
+        @bottom-left { content: none; }
+        @bottom-center { content: none; }
+        @bottom-right { content: none; }
+        @top-left-corner { content: none; }
+        @top-right-corner { content: none; }
+        @bottom-left-corner { content: none; }
+        @bottom-right-corner { content: none; }
+      } 
+      thead { display: ${String(d.repeatHeader)==='1' ? 'table-header-group' : 'table-row-group'}; } 
+    }`;
+  }
+}
+
+function formatINR(n){
+  const num = parseFloat(n);
+  if(isNaN(num)) return '—';
+  return '₹ ' + num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function isBlankAmount(v){
+  return v === '' || v === null || typeof v === 'undefined';
+}
+
+function waitForReportAssets(){
+  const imgs = Array.from(document.querySelectorAll('#printRoot img')).filter(img => img.src && !img.classList.contains('hidden'));
+  const imgWait = Promise.all(imgs.map(img => {
+    if(img.complete) return Promise.resolve();
+    return new Promise(res => {
+      img.onload = () => res();
+      img.onerror = () => res();
+      setTimeout(res, 2500);
+    });
+  }));
+  const fontWait = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(()=>{}) : Promise.resolve();
+  return Promise.all([imgWait, fontWait]);
+}
+
+function setReportMode(mode){
+  activePrintMode = mode === 'members' ? 'members' : 'full';
+  document.body.classList.remove('print-members', 'print-full');
+  document.body.classList.add(activePrintMode === 'members' ? 'print-members' : 'print-full');
+  document.querySelectorAll('.sec-full-only').forEach(el => {
+    el.classList.toggle('hidden-section', activePrintMode === 'members');
+  });
+}
+
+function onReportSettingChange(){
+  const design = readReportSettingsFromUI();
+  saveReportDesign(design, 'shared');
+  saveReportDesign(design, design.previewType === 'members' ? 'members' : 'full');
+  applyReportDesignToSheet(design);
+  setReportMode(design.previewType);
+  renderReport();
+}
+
+function onMemberFilterChange(){
+  onReportSettingChange();
+}
+
+function toggleReportSettings(){
+  const panel = $('reportSettingsPanel');
+  if(!panel) return;
+  reportSettingsOpen = !reportSettingsOpen;
+  panel.open = reportSettingsOpen;
+  $('reportPreviewFrame').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function previewReport(){
+  const design = readReportSettingsFromUI();
+  setReportMode(design.previewType);
+  applyReportDesignToSheet(design);
+  renderReport();
+  initImageResizing();
+  $('reportPreviewFrame').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ========== Separate Jama (Income) Report ========== */
+function previewJamaReport(){
+  renderJamaReport();
+  initImageResizing();
+  $('reportPreviewFrame').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderJamaReport(){
+  if(!currentUser) return;
+  users = JSON.parse(localStorage.getItem('users')||'{}');
+  const u = users[currentUser];
+  const rec = u.records[currentYear] || { group:{}, membersAmounts:{}, committee:[], donations:[], expenseGroups:{}, signRoles:[] };
+  const group = rec.group || {};
+  const groupNameToDisplay = u.groupName || '';
+  
+  let design;
+  try {
+    design = readReportSettingsFromUI();
+  } catch(e) {
+    design = loadReportDesign('shared');
+  }
+  applyReportDesignToSheet(design);
+
+  // Setup header
+  $('reportTitle').textContent = groupNameToDisplay;
+  $('reportTitle').style.fontFamily = design.titleFont || group.fontStyle || DEFAULT_REPORT_DESIGN.titleFont;
+  
+  const motto = group.moto || '';
+  $('reportMoto').textContent = motto;
+  $('reportMoto').style.display = motto ? 'block' : 'none';
+  
+  $('reportSubtitleDisplay').textContent = `जमा अहवाल / Income Report — ${currentYear}`;
+  $('reportSubtitleDisplay').style.display = 'block';
+
+  let metaHtml = `<span class="rpt-meta-item"><strong>वर्ष:</strong> ${escapeHtml(currentYear)}</span>`;
+  if (group.est) metaHtml += `<span class="rpt-meta-item"><strong>स्थापना:</strong> ${escapeHtml(group.est)}</span>`;
+  if (group.ganpatiDonorName) metaHtml += `<span class="rpt-meta-item"><strong>गणपती मूर्ती देनगीदार:</strong> ${escapeHtml(group.ganpatiDonorName)}</span>`;
+  $('reportMeta').innerHTML = metaHtml;
+
+  const gLogo = group.groupLogo || '';
+  const pLogo = group.ganpatiLogo || '';
+  $('reportGroupLogo').src = gLogo;
+  $('reportGanpatiLogo').src = pLogo;
+  $('rptGroupLogoWrap').classList.toggle('hidden-logo', !gLogo);
+  $('rptGanpatiLogoWrap').classList.toggle('hidden-logo', !pLogo);
+  
+  // Apply custom image dimensions
+  $('reportGroupLogo').style.width = (design.imageGroupLogoW || 80) + 'px';
+  $('reportGroupLogo').style.height = (design.imageGroupLogoH || 80) + 'px';
+  $('reportGanpatiLogo').style.width = (design.imageGanpatiLogoW || 80) + 'px';
+  $('reportGanpatiLogo').style.height = (design.imageGanpatiLogoH || 80) + 'px';
+
+  // Hide all sections except income-related
+  $('secMembersVargani').classList.add('hidden-section');
+  $('secCommittee').classList.add('hidden-section');
+  $('secFinancial').classList.add('hidden-section');
+  $('secDonations').classList.add('hidden-section');
+  $('secExpenses').classList.add('hidden-section');
+  $('secSignatures').classList.add('hidden-section');
+
+  // Create temporary Jama section
+  let jamaSection = $('secJama');
+  if(!jamaSection){
+    jamaSection = document.createElement('section');
+    jamaSection.id = 'secJama';
+    jamaSection.className = 'rpt-section';
+    $('reportSheet').insertBefore(jamaSection, $('secMembersVargani'));
+  }
+  jamaSection.classList.remove('hidden-section');
+
+  // Build Jama report content
+  let jamaHtml = `<h3 class="rpt-section-title">जमा अहवाल (Income Report) — ${escapeHtml(currentYear)}</h3>`;
+  
+  // Previous balance
+  const prevBalancePrincipal = parseFloat(group.prevBalancePrincipal) || 0;
+  const prevBalanceInterest = parseFloat(group.prevBalanceInterest) || 0;
+  const prevBalanceTotal = prevBalancePrincipal + prevBalanceInterest;
+  
+  // Member contributions (Vargani)
+  const master = u.masterMembers || [];
+  const amounts = rec.membersAmounts || {};
+  let memberRows = [];
+  let totalMemberAmount = 0;
+  master.forEach(name => {
+    const raw = (name in amounts) ? amounts[name] : '';
+    if(!isBlankAmount(raw)){
+      const amt = parseFloat(raw) || 0;
+      totalMemberAmount += amt;
+      memberRows.push({ name, amount: amt });
+    }
+  });
+  
+  // Sort members by contribution amount in descending order (highest first)
+  memberRows.sort((a, b) => b.amount - a.amount);
+
+  // Donations
+  const donations = rec.donations || [];
+  let totalDonationAmount = 0;
+  donations.forEach(d => {
+    totalDonationAmount += (d.amount || d.itemValue || 0);
+  });
+
+  // Build table
+  jamaHtml += `<table class="rpt-table">
+    <thead>
+      <tr>
+        <th class="col-sr center">अ. क्र.</th>
+        <th class="col-don-desc">तपशील / Details</th>
+        <th class="col-don-amt num">रक्कम (₹)</th>
+      </tr>
+    </thead>
+    <tbody>`;
+
+  let rowNum = 1;
+  
+  // Previous balance entry
+  if(prevBalanceTotal > 0){
+    jamaHtml += `<tr>
+      <td class="center">${rowNum++}</td>
+      <td>मागील वर्षाची शिल्लक`;
+    if(prevBalanceInterest > 0){
+      jamaHtml += ` (मुद्दल: ${formatINR(prevBalancePrincipal)}, व्याज: ${formatINR(prevBalanceInterest)})`;
+    }
+    jamaHtml += `</td>
+      <td class="num">${formatINR(prevBalanceTotal)}</td>
+    </tr>`;
+  }
+
+  // Member contributions
+  memberRows.forEach(row => {
+    jamaHtml += `<tr>
+      <td class="center">${rowNum++}</td>
+      <td>सदस्य वर्गणी — ${escapeHtml(row.name)}</td>
+      <td class="num">${formatINR(row.amount)}</td>
+    </tr>`;
+  });
+
+  // Donations
+  donations.forEach((d, idx) => {
+    const description = d.type === 'cash' 
+      ? `देणगी (रक्कम) — ${escapeHtml(d.donorName)}` 
+      : `देणगी (${escapeHtml(d.itemName)}) — ${escapeHtml(d.donorName)}`;
+    const value = d.amount || d.itemValue || 0;
+    jamaHtml += `<tr>
+      <td class="center">${rowNum++}</td>
+      <td>${description}</td>
+      <td class="num">${formatINR(value)}</td>
+    </tr>`;
+  });
+
+  const totalJama = prevBalanceTotal + totalMemberAmount + totalDonationAmount;
+
+  jamaHtml += `</tbody>
+    <tfoot>
+      <tr class="rpt-total-row">
+        <td colspan="2"><strong>एकूण जमा (Total Income)</strong></td>
+        <td class="num"><strong>${formatINR(totalJama)}</strong></td>
+      </tr>
+    </tfoot>
+  </table>`;
+
+  // Summary stats
+  jamaHtml += `<div class="rpt-summary-stats" style="margin-top:12px;">
+    <span>मागील शिल्लक: <strong>${formatINR(prevBalanceTotal)}</strong></span>
+    <span>सदस्य वर्गणी: <strong>${formatINR(totalMemberAmount)}</strong></span>
+    <span>देणग्या: <strong>${formatINR(totalDonationAmount)}</strong></span>
+    <span>एकूण: <strong>${formatINR(totalJama)}</strong></span>
+  </div>`;
+
+  jamaSection.innerHTML = jamaHtml;
+
+  // Show signatures if enabled
+  const signRoles = (rec.signRoles && rec.signRoles.length) ? rec.signRoles : ['अध्यक्ष', 'सचिव', 'खजिनदार'];
+  const sigSec = $('secSignatures');
+  const sigWrap = $('reportSignatures');
+  if (String(design.showSig) === '1') {
+    sigWrap.innerHTML = signRoles.map(role =>
+      `<div class="rpt-sig-box"><div class="rpt-sig-line">${escapeHtml(role)}</div></div>`
+    ).join('');
+    sigSec.classList.remove('hidden-section');
+  } else {
+    sigWrap.innerHTML = '';
+    sigSec.classList.add('hidden-section');
+  }
+
+  // Footer
+  const now = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  const formattedDate = new Intl.DateTimeFormat('mr-IN', options).format(now);
+  if (String(design.showDate) === '1') {
+    $('reportGeneratedDate').textContent = `अहवाल तयार करण्याची वेळ: ${formattedDate}`;
+    $('reportFooter').style.display = 'flex';
+  } else {
+    $('reportGeneratedDate').textContent = '';
+    $('reportFooter').style.display = String(design.showSig) === '1' ? 'flex' : 'none';
+  }
+}
+
+/* ========== Separate Kharch (Expense) Report ========== */
+function previewKharchReport(){
+  renderKharchReport();
+  initImageResizing();
+  $('reportPreviewFrame').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderKharchReport(){
+  if(!currentUser) return;
+  users = JSON.parse(localStorage.getItem('users')||'{}');
+  const u = users[currentUser];
+  const rec = u.records[currentYear] || { group:{}, membersAmounts:{}, committee:[], donations:[], expenseGroups:{}, signRoles:[] };
+  const group = rec.group || {};
+  const groupNameToDisplay = u.groupName || '';
+  
+  let design;
+  try {
+    design = readReportSettingsFromUI();
+  } catch(e) {
+    design = loadReportDesign('shared');
+  }
+  applyReportDesignToSheet(design);
+
+  // Setup header
+  $('reportTitle').textContent = groupNameToDisplay;
+  $('reportTitle').style.fontFamily = design.titleFont || group.fontStyle || DEFAULT_REPORT_DESIGN.titleFont;
+  
+  const motto = group.moto || '';
+  $('reportMoto').textContent = motto;
+  $('reportMoto').style.display = motto ? 'block' : 'none';
+  
+  $('reportSubtitleDisplay').textContent = `खर्च अहवाल / Expense Report — ${currentYear}`;
+  $('reportSubtitleDisplay').style.display = 'block';
+
+  let metaHtml = `<span class="rpt-meta-item"><strong>वर्ष:</strong> ${escapeHtml(currentYear)}</span>`;
+  if (group.est) metaHtml += `<span class="rpt-meta-item"><strong>स्थापना:</strong> ${escapeHtml(group.est)}</span>`;
+  if (group.ganpatiDonorName) metaHtml += `<span class="rpt-meta-item"><strong>गणपती मूर्ती देनगीदार:</strong> ${escapeHtml(group.ganpatiDonorName)}</span>`;
+  $('reportMeta').innerHTML = metaHtml;
+
+  const gLogo = group.groupLogo || '';
+  const pLogo = group.ganpatiLogo || '';
+  $('reportGroupLogo').src = gLogo;
+  $('reportGanpatiLogo').src = pLogo;
+  $('rptGroupLogoWrap').classList.toggle('hidden-logo', !gLogo);
+  $('rptGanpatiLogoWrap').classList.toggle('hidden-logo', !pLogo);
+  
+  // Apply custom image dimensions
+  $('reportGroupLogo').style.width = (design.imageGroupLogoW || 80) + 'px';
+  $('reportGroupLogo').style.height = (design.imageGroupLogoH || 80) + 'px';
+  $('reportGanpatiLogo').style.width = (design.imageGanpatiLogoW || 80) + 'px';
+  $('reportGanpatiLogo').style.height = (design.imageGanpatiLogoH || 80) + 'px';
+
+  // Hide all sections except expense-related
+  $('secMembersVargani').classList.add('hidden-section');
+  $('secCommittee').classList.add('hidden-section');
+  $('secFinancial').classList.add('hidden-section');
+  $('secDonations').classList.add('hidden-section');
+  $('secExpenses').classList.add('hidden-section');
+  $('secSignatures').classList.add('hidden-section');
+  
+  // Hide Jama section if exists
+  const jamaSection = $('secJama');
+  if(jamaSection) jamaSection.classList.add('hidden-section');
+
+  // Create temporary Kharch section
+  let kharchSection = $('secKharch');
+  if(!kharchSection){
+    kharchSection = document.createElement('section');
+    kharchSection.id = 'secKharch';
+    kharchSection.className = 'rpt-section';
+    $('reportSheet').insertBefore(kharchSection, $('secMembersVargani'));
+  }
+  kharchSection.classList.remove('hidden-section');
+
+  // Build Kharch report content
+  let kharchHtml = `<h3 class="rpt-section-title">खर्च अहवाल (Expense Report) — ${escapeHtml(currentYear)}</h3>`;
+  
+  // Collect all expenses with hierarchical structure
+  const expenseGroups = rec.expenseGroups || {};
+  const expenseGroupNames = Object.keys(expenseGroups);
+  let totalExpense = 0;
+
+  // Build hierarchical HTML with proper structure
+  kharchHtml += `<table class="rpt-table">
+    <thead>
+      <tr>
+        <th class="col-sr center">अ. क्र.</th>
+        <th class="col-exp-cat">खर्चाचा तपशील / Expense Details</th>
+        <th class="col-don-amt num">रक्कम (₹)</th>
+      </tr>
+    </thead>
+    <tbody>`;
+
+  if(expenseGroupNames.length === 0 || (expenseGroupNames.length === 1 && expenseGroups[expenseGroupNames[0]].length === 0)){
+    kharchHtml += `<tr><td colspan="3" class="rpt-blank center">या वर्षासाठी कोणताही खर्च नोंद नाही</td></tr>`;
+  } else {
+    let rowNum = 1;
+    
+    // Iterate through each main expense group
+    expenseGroupNames.forEach(mainGroupName => {
+      const groupItems = expenseGroups[mainGroupName] || [];
+      let groupSubtotal = 0;
+      
+      if(groupItems.length > 0) {
+        // Main group heading row
+        kharchHtml += `<tr style="background:#f9f5e3; font-weight:bold;">
+          <td class="center" style="font-weight:bold;">-</td>
+          <td style="font-weight:bold; color:#5d4037;">मुख्य खर्च गट (Main Group): ${escapeHtml(mainGroupName)}</td>
+          <td class="num" style="font-weight:bold;"></td>
+        </tr>`;
+        
+        // Individual expense items under this group
+        groupItems.forEach(item => {
+          const itemAmount = item.total || 0;
+          groupSubtotal += itemAmount;
+          totalExpense += itemAmount;
+          
+          kharchHtml += `<tr style="background:#ffffff;">
+            <td class="center">${rowNum++}</td>
+            <td style="padding-left:24px;">└─ ${escapeHtml(item.name)}</td>
+            <td class="num">${formatINR(itemAmount)}</td>
+          </tr>`;
+        });
+        
+        // Subtotal row for this group
+        kharchHtml += `<tr style="background:#fff9e6; border-top:2px solid #e0d0a8;">
+          <td class="center" style="font-weight:bold;"></td>
+          <td style="text-align:right; padding-right:12px; font-weight:bold;">गट एकूण (Group Subtotal):</td>
+          <td class="num" style="font-weight:bold; color:#c45c00;">${formatINR(groupSubtotal)}</td>
+        </tr>`;
+        
+        // Empty row for spacing
+        kharchHtml += `<tr style="height:8px; background:transparent; border:none;"><td colspan="3"></td></tr>`;
+      }
+    });
+  }
+
+  kharchHtml += `</tbody>
+    <tfoot>
+      <tr class="rpt-total-row">
+        <td colspan="2"><strong>एकूण खर्च (Total Expenses)</strong></td>
+        <td class="num"><strong>${formatINR(totalExpense)}</strong></td>
+      </tr>
+    </tfoot>
+  </table>`;
+
+  // Summary stats by group (optional detailed breakdown)
+  if(expenseGroupNames.length > 0 && expenseGroupNames.some(g => expenseGroups[g].length > 0)){
+    kharchHtml += `<div class="rpt-summary-stats" style="margin-top:16px; padding:12px; background:#f9f5e3; border-radius:6px;">
+      <h4 style="width:100%; margin:0 0 10px; color:#5d4037;">खर्च गटनिहाय संक्षिप्त विवरण (Group-wise Summary):</h4>`;
+    
+    expenseGroupNames.forEach(groupName => {
+      const groupTotal = (expenseGroups[groupName] || []).reduce((sum, item) => sum + (item.total || 0), 0);
+      if(groupTotal > 0) {
+        kharchHtml += `<span style="display:inline-block; margin:6px 12px 6px 0;">📊 ${escapeHtml(groupName)}: <strong style="color:#c45c00;">${formatINR(groupTotal)}</strong></span>`;
+      }
+    });
+    
+    kharchHtml += `<div style="margin-top:10px; padding-top:10px; border-top:1px solid #e0d0a8;"><strong>कुल एकूण (Grand Total):</strong> <strong style="color:#c45c00; font-size:1.1em;">${formatINR(totalExpense)}</strong></div></div>`;
+  }
+
+  kharchSection.innerHTML = kharchHtml;
+
+  // Show signatures if enabled
+  const signRoles = (rec.signRoles && rec.signRoles.length) ? rec.signRoles : ['अध्यक्ष', 'सचिव', 'खजिनदार'];
+  const sigSec = $('secSignatures');
+  const sigWrap = $('reportSignatures');
+  if (String(design.showSig) === '1') {
+    sigWrap.innerHTML = signRoles.map(role =>
+      `<div class="rpt-sig-box"><div class="rpt-sig-line">${escapeHtml(role)}</div></div>`
+    ).join('');
+    sigSec.classList.remove('hidden-section');
+  } else {
+    sigWrap.innerHTML = '';
+    sigSec.classList.add('hidden-section');
+  }
+
+  // Footer
+  const now = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  const formattedDate = new Intl.DateTimeFormat('mr-IN', options).format(now);
+  if (String(design.showDate) === '1') {
+    $('reportGeneratedDate').textContent = `अहवाल तयार करण्याची वेळ: ${formattedDate}`;
+    $('reportFooter').style.display = 'flex';
+  } else {
+    $('reportGeneratedDate').textContent = '';
+    $('reportFooter').style.display = String(design.showSig) === '1' ? 'flex' : 'none';
+  }
+}
+
+function resetReportCustomization(){
+  if(!confirm('Report customization reset करायचे? (सदस्य / देणगी / खर्च डेटा बदलणार नाही)')) return;
+  const fresh = Object.assign({}, DEFAULT_REPORT_DESIGN);
+  populateReportSettingsUI(fresh);
+  saveReportDesign(fresh, 'shared');
+  saveReportDesign(fresh, 'full');
+  saveReportDesign(fresh, 'members');
+  applyReportDesignToSheet(fresh);
+  setReportMode('full');
+  renderReport();
+}
+
+async function printCurrentReport(mode){
+  if(!currentUser) return alert('Please login');
+  const design = readReportSettingsFromUI();
+  if(mode){
+    design.previewType = mode;
+    $('rptPreviewType').value = mode;
+  }
+  saveReportDesign(design, 'shared');
+  applyReportDesignToSheet(design);
+  setReportMode(design.previewType);
+  renderReport();
+  await waitForReportAssets();
+  
+  // Add print configuration meta tag for better browser compatibility
+  let printMeta = document.getElementById('printConfig');
+  if (!printMeta) {
+    printMeta = document.createElement('meta');
+    printMeta.id = 'printConfig';
+    printMeta.name = 'print';
+    document.head.appendChild(printMeta);
+  }
+  
+  // Configure print margins and remove default headers/footers
+  // This works with Chromium browsers
+  const printStyle = document.getElementById('printConfigStyle');
+  if (printStyle) printStyle.remove();
+  
+  const newPrintStyle = document.createElement('style');
+  newPrintStyle.id = 'printConfigStyle';
+  newPrintStyle.textContent = `
+    @media print {
+      @page {
+        margin: ${design.marTop}mm ${design.marRight}mm ${design.marBottom}mm ${design.marLeft}mm !important;
+        size: A4 ${design.orientation === 'landscape' ? 'landscape' : 'portrait'} !important;
+      }
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  `;
+  document.head.appendChild(newPrintStyle);
+  
+  // Small delay to ensure styles are applied
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+function printSaveAsPDF(){
+  printCurrentReport($('rptPreviewType').value || 'full');
+}
+
+function downloadMembersVarganiPDF(){
+  printCurrentReport('members');
+}
+
+function downloadCompleteAnnualPDF(){
+  printCurrentReport('full');
+}
+
+/* ========== Download Jama Report as PDF ========== */
+async function downloadJamaPDF(){
+  if(!currentUser) return alert('Please login');
+  const design = readReportSettingsFromUI();
+  applyReportDesignToSheet(design);
+  renderJamaReport();
+  await waitForReportAssets();
+  
+  // Configure print margins and remove default headers/footers
+  const printStyle = document.getElementById('printConfigStyle');
+  if (printStyle) printStyle.remove();
+  
+  const newPrintStyle = document.createElement('style');
+  newPrintStyle.id = 'printConfigStyle';
+  newPrintStyle.textContent = `
+    @media print {
+      @page {
+        margin: ${design.marTop}mm ${design.marRight}mm ${design.marBottom}mm ${design.marLeft}mm !important;
+        size: A4 ${design.orientation === 'landscape' ? 'landscape' : 'portrait'} !important;
+      }
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  `;
+  document.head.appendChild(newPrintStyle);
+  
+  // Small delay to ensure styles are applied
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+/* ========== Download Kharch Report as PDF ========== */
+async function downloadKharchPDF(){
+  if(!currentUser) return alert('Please login');
+  const design = readReportSettingsFromUI();
+  applyReportDesignToSheet(design);
+  renderKharchReport();
+  await waitForReportAssets();
+  
+  // Configure print margins and remove default headers/footers
+  const printStyle = document.getElementById('printConfigStyle');
+  if (printStyle) printStyle.remove();
+  
+  const newPrintStyle = document.createElement('style');
+  newPrintStyle.id = 'printConfigStyle';
+  newPrintStyle.textContent = `
+    @media print {
+      @page {
+        margin: ${design.marTop}mm ${design.marRight}mm ${design.marBottom}mm ${design.marLeft}mm !important;
+        size: A4 ${design.orientation === 'landscape' ? 'landscape' : 'portrait'} !important;
+      }
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  `;
+  document.head.appendChild(newPrintStyle);
+  
+  // Small delay to ensure styles are applied
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
 /* ========== Report rendering ========== */
 function renderReport(){
   if(!currentUser) return;
   users = JSON.parse(localStorage.getItem('users')||'{}');
   const u = users[currentUser];
   const rec = u.records[currentYear] || { group:{}, membersAmounts:{}, committee:[], donations:[], expenseGroups:{}, signRoles:[] };
+  const group = rec.group || {};
   const groupNameToDisplay = u.groupName || '';
   const defaultFont = "'Baloo Bhai 2', 'Noto Sans Devanagari', sans-serif";
-  const groupFont = (rec.group && rec.group.fontStyle) ? rec.group.fontStyle : defaultFont;
+  const groupFont = group.fontStyle || defaultFont;
 
-  // Header and Meta Info
-  $('reportTitle').innerHTML = `<span class="report-group-name" style="font-family: ${groupFont};">${escapeHtml(groupNameToDisplay)}</span> — ${currentYear}`;
-  $('reportMoto').textContent = rec.group.moto || '';
-  $('reportMoto').style.display = rec.group.moto ? 'block' : 'none';
+  let design;
+  try {
+    design = readReportSettingsFromUI();
+  } catch(e) {
+    design = loadReportDesign('shared');
+    populateReportSettingsUI(design);
+  }
+  // Prefer group's saved title font when design still default-ish and group font set
+  if(group.fontStyle && design.titleFont === DEFAULT_REPORT_DESIGN.titleFont){
+    // keep design titleFont unless user changed; on first open sync from group
+  }
+  applyReportDesignToSheet(design);
+  setReportMode(design.previewType || activePrintMode || 'full');
+
+  // Hide temporary Jama and Kharch sections (for separate reports)
+  const jamaSection = $('secJama');
+  if(jamaSection) jamaSection.classList.add('hidden-section');
+  const kharchSection = $('secKharch');
+  if(kharchSection) kharchSection.classList.add('hidden-section');
+
+  $('reportTitle').textContent = groupNameToDisplay;
+  $('reportTitle').style.fontFamily = design.titleFont || groupFont;
+
+  const motto = group.moto || '';
+  $('reportMoto').textContent = motto;
+  $('reportMoto').style.display = motto ? 'block' : 'none';
+
+  const sub = design.subtitle || '';
+  $('reportSubtitleDisplay').textContent = sub;
+  $('reportSubtitleDisplay').style.display = sub ? 'block' : 'none';
 
   let metaHtml = '';
-  if (rec.group.est) metaHtml += `<span class="report-meta-item">स्थापना: ${rec.group.est}</span>`;
-  if (rec.group.ganpatiDonorName) metaHtml += `<span class="report-meta-item">गणपती मूर्ती देनगीदार : ${escapeHtml(rec.group.ganpatiDonorName)}</span>`;
-  const reportMetaDiv = $('reportMeta');
-  reportMetaDiv.innerHTML = metaHtml;
-  reportMetaDiv.style.display = metaHtml.trim() ? 'block' : 'none';
+  metaHtml += `<span class="rpt-meta-item"><strong>वर्ष:</strong> ${escapeHtml(currentYear)}</span>`;
+  if (group.est) metaHtml += `<span class="rpt-meta-item"><strong>स्थापना:</strong> ${escapeHtml(group.est)}</span>`;
+  if (group.ganpatiDonorName) metaHtml += `<span class="rpt-meta-item"><strong>गणपती मूर्ती देनगीदार:</strong> ${escapeHtml(group.ganpatiDonorName)}</span>`;
+  $('reportMeta').innerHTML = metaHtml;
 
-  $('reportGroupLogo').src = rec.group.groupLogo || '';
-  $('reportGanpatiLogo').src = rec.group.ganpatiLogo || '';
+  const gLogo = group.groupLogo || '';
+  const pLogo = group.ganpatiLogo || '';
+  $('reportGroupLogo').src = gLogo;
+  $('reportGanpatiLogo').src = pLogo;
+  $('rptGroupLogoWrap').classList.toggle('hidden-logo', !gLogo);
+  $('rptGanpatiLogoWrap').classList.toggle('hidden-logo', !pLogo);
+  
+  // Apply custom image dimensions
+  $('reportGroupLogo').style.width = (design.imageGroupLogoW || design.logoW) + 'px';
+  $('reportGroupLogo').style.height = (design.imageGroupLogoH || design.logoH) + 'px';
+  $('reportGanpatiLogo').style.width = (design.imageGanpatiLogoW || design.logoW) + 'px';
+  $('reportGanpatiLogo').style.height = (design.imageGanpatiLogoH || design.logoH) + 'px';
 
-  // Committee Section
-  const committeeTable = $('reportCommittee');
-  const committeeHeader = committeeTable.previousElementSibling;
+  // ---- Members & Vargani (selected year only) ----
+  const master = u.masterMembers || [];
+  const amounts = rec.membersAmounts || {};
+  const filter = design.memberFilter || 'all';
+  let rows = master.map(name => {
+    const raw = (name in amounts) ? amounts[name] : '';
+    const blank = isBlankAmount(raw);
+    const num = blank ? null : (parseFloat(raw) || 0);
+    return { name, raw, blank, num };
+  });
+  if(filter === 'withAmount') rows = rows.filter(r => !r.blank);
+  if(filter === 'blank') rows = rows.filter(r => r.blank || r.num === 0);
+  
+  // Sort members by contribution amount in descending order (highest first)
+  rows.sort((a, b) => {
+    // Blank amounts go to the end
+    if(a.blank && !b.blank) return 1;
+    if(!a.blank && b.blank) return -1;
+    if(a.blank && b.blank) return 0;
+    // Sort by amount descending (highest first)
+    return (b.num || 0) - (a.num || 0);
+  });
+
+  const tbodyM = $('reportMembersVargani').querySelector('tbody');
+  const tfootM = $('reportMembersVargani').querySelector('tfoot');
+  tbodyM.innerHTML = '';
+  let recordedTotal = 0;
+  let recordedCount = 0;
+  rows.forEach((r, i) => {
+    if(!r.blank){ recordedTotal += (r.num || 0); recordedCount++; }
+    const amtDisplay = r.blank ? '<span class="rpt-blank">—</span>' : formatINR(r.num);
+    const status = r.blank
+      ? '<span class="rpt-blank">नोंद नाही</span>'
+      : (r.num === 0 ? 'शून्य नोंद' : 'नोंद झाली');
+    tbodyM.innerHTML += `<tr>
+      <td class="col-sr center">${i+1}</td>
+      <td class="col-name">${escapeHtml(r.name)}</td>
+      <td class="col-amt num">${amtDisplay}</td>
+      <td class="col-status">${status}</td>
+    </tr>`;
+  });
+  if(rows.length === 0){
+    tbodyM.innerHTML = `<tr><td colspan="4" class="rpt-blank">या फिल्टरसाठी सदस्य नाहीत</td></tr>`;
+  }
+  // totals from ALL master members with recorded amounts for year (not just filtered), for accuracy note
+  let yearRecordedTotal = 0;
+  let yearRecordedCount = 0;
+  master.forEach(name => {
+    const raw = amounts[name];
+    if(!isBlankAmount(raw)){
+      yearRecordedTotal += parseFloat(raw) || 0;
+      yearRecordedCount++;
+    }
+  });
+  tfootM.innerHTML = `<tr class="rpt-total-row">
+    <td colspan="2"><strong>एकूण (दर्शविलेले)</strong> — सदस्य: ${rows.length}</td>
+    <td class="num"><strong>${formatINR(recordedTotal)}</strong></td>
+    <td></td>
+  </tr>`;
+  $('membersVarganiStats').innerHTML =
+    `<span>एकूण सदस्य (मास्टर): <strong>${master.length}</strong></span>` +
+    `<span>नोंद असलेले: <strong>${yearRecordedCount}</strong></span>` +
+    `<span>वर्षाची एकूण वर्गणी: <strong>${formatINR(yearRecordedTotal)}</strong></span>` +
+    `<span class="muted">रिकामी रक्कम = पुष्टी झालेली पेमेंट नाही</span>`;
+
+  const showFullSecs = (design.previewType || activePrintMode) !== 'members';
+
+  // Committee
   const committeeData = rec.committee || [];
-  if (committeeData.length > 0) {
-    const tbodyC = committeeTable.querySelector('tbody');
-    tbodyC.innerHTML = '';
-    committeeData.forEach(c => { tbodyC.innerHTML += `<tr><td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.role)}</td></tr>`; });
-    committeeTable.style.display = 'table';
-    committeeHeader.style.display = 'block';
+  const committeeSec = $('secCommittee');
+  const tbodyC = $('reportCommittee').querySelector('tbody');
+  tbodyC.innerHTML = '';
+  if (showFullSecs && committeeData.length > 0) {
+    tbodyC.innerHTML = committeeData.map(c =>
+      `<tr><td class="col-com-name">${escapeHtml(c.name)}</td><td class="col-com-role">${escapeHtml(c.role)}</td></tr>`
+    ).join('');
+    committeeSec.classList.remove('hidden-section');
   } else {
-    committeeTable.style.display = 'none';
-    committeeHeader.style.display = 'none';
+    committeeSec.classList.add('hidden-section');
   }
 
-  // Financial calculations
+  // Financial calculations (existing rules)
   let totalMemberAmount = Object.values(rec.membersAmounts || {}).reduce((sum, amt) => sum + (parseFloat(amt) || 0), 0);
   let totalDonationAmount = (rec.donations || []).reduce((sum, d) => sum + (d.amount || d.itemValue || 0), 0);
   let totalExpenseAmount = Object.values(rec.expenseGroups || {}).flat().reduce((sum, item) => sum + (item.total || 0), 0);
-  const prevBalancePrincipal = rec.group.prevBalancePrincipal || 0;
-  const prevBalanceInterest = rec.group.prevBalanceInterest || 0;
+  const prevBalancePrincipal = parseFloat(group.prevBalancePrincipal) || 0;
+  const prevBalanceInterest = parseFloat(group.prevBalanceInterest) || 0;
   const prevBalanceTotal = prevBalancePrincipal + prevBalanceInterest;
   const totalCollected = prevBalanceTotal + totalMemberAmount + totalDonationAmount;
   const finalBalance = totalCollected - totalExpenseAmount;
-  
-  // Financial Summary Table (Always visible)
+
+  const financialSec = $('secFinancial');
   const tbodyMS = $('reportMembersSummary').querySelector('tbody');
-  let summaryHtml = `<tr><td>मागील वर्षाची शिल्लक</td><td>₹ ${prevBalancePrincipal.toFixed(2)}</td></tr>`;
+  let summaryHtml = `<tr><td>मागील वर्षाची शिल्लक</td><td class="num">${formatINR(prevBalancePrincipal)}</td></tr>`;
   if (prevBalanceInterest > 0) {
-      summaryHtml += `<tr><td>त्यावरील व्याज</td><td>₹ ${prevBalanceInterest.toFixed(2)}</td></tr>`;
+      summaryHtml += `<tr><td>त्यावरील व्याज</td><td class="num">${formatINR(prevBalanceInterest)}</td></tr>`;
   }
   summaryHtml += `
-    <tr><td>या वर्षातील जमा (वर्गणी)</td><td>₹ ${totalMemberAmount.toFixed(2)}</td></tr>
-    <tr><td>या वर्षातील जमा (देणगी)</td><td>₹ ${totalDonationAmount.toFixed(2)}</td></tr>
-    <tr><td><strong>एकूण जमा</strong></td><td><strong>₹ ${totalCollected.toFixed(2)}</strong></td></tr>
-    <tr><td>एकूण खर्च</td><td>₹ ${totalExpenseAmount.toFixed(2)}</td></tr>
-    <tr><td><strong>अंतिम शिल्लक</strong></td><td><strong>₹ ${finalBalance.toFixed(2)}</strong></td></tr>
+    <tr><td>या वर्षातील जमा (वर्गणी)</td><td class="num">${formatINR(totalMemberAmount)}</td></tr>
+    <tr><td>या वर्षातील जमा (देणगी)</td><td class="num">${formatINR(totalDonationAmount)}</td></tr>
+    <tr class="rpt-total-row"><td><strong>एकूण जमा</strong></td><td class="num"><strong>${formatINR(totalCollected)}</strong></td></tr>
+    <tr><td>एकूण खर्च</td><td class="num">${formatINR(totalExpenseAmount)}</td></tr>
+    <tr class="rpt-total-row"><td><strong>अंतिम शिल्लक</strong></td><td class="num"><strong>${formatINR(finalBalance)}</strong></td></tr>
   `;
   tbodyMS.innerHTML = summaryHtml;
-  
-  // Donations Section
-  const donationsTable = $('reportDonations');
-  const donationsHeader = donationsTable.previousElementSibling;
+  financialSec.classList.toggle('hidden-section', !showFullSecs);
+
+  // Donations
   const donationsData = rec.donations || [];
-  if (donationsData.length > 0) {
-      const tbodyD = donationsTable.querySelector('tbody');
-      tbodyD.innerHTML = '';
-      donationsData.forEach(d => {
-          const description = d.type === 'cash' ? `रक्कम` : escapeHtml(d.itemName);
-          const value = d.amount || d.itemValue;
-          tbodyD.innerHTML += `<tr><td>${escapeHtml(d.donorName)}</td><td>${description}</td><td>₹ ${value.toFixed(2)}</td></tr>`;
-      });
-      donationsTable.style.display = 'table';
-      donationsHeader.style.display = 'block';
+  const donationsSec = $('secDonations');
+  const tbodyD = $('reportDonations').querySelector('tbody');
+  tbodyD.innerHTML = '';
+  if (showFullSecs && donationsData.length > 0) {
+      tbodyD.innerHTML = donationsData.map(d => {
+          const description = d.type === 'cash' ? 'रक्कम' : escapeHtml(d.itemName);
+          const value = d.amount || d.itemValue || 0;
+          return `<tr><td>${escapeHtml(d.donorName)}</td><td class="col-don-desc">${description}</td><td class="col-don-amt num">${formatINR(value)}</td></tr>`;
+      }).join('');
+      donationsSec.classList.remove('hidden-section');
   } else {
-      donationsTable.style.display = 'none';
-      donationsHeader.style.display = 'none';
+      donationsSec.classList.add('hidden-section');
   }
 
-  // Expenses Section
-  const expensesTable = $('reportExpenses');
-  const expensesHeader = expensesTable.previousElementSibling;
+  // Expenses - Hierarchical structure with main groups and items
   const expenseGroupNames = Object.keys(rec.expenseGroups || {});
-  if (expenseGroupNames.length > 0) {
-    const tbodyE = expensesTable.querySelector('tbody');
-    tbodyE.innerHTML = '';
+  const expensesSec = $('secExpenses');
+  const tbodyE = $('reportExpenses').querySelector('tbody');
+  tbodyE.innerHTML = '';
+  
+  if (showFullSecs && expenseGroupNames.length > 0) {
+    let rowNum = 1;
+    let totalExpenseAmount = 0;
+    let expenseHTML = '';
+    
     expenseGroupNames.forEach(groupName => {
-      const groupTotal = (rec.expenseGroups[groupName] || []).reduce((sum, item) => sum + item.total, 0);
-      tbodyE.innerHTML += `<tr><td>${escapeHtml(groupName)}</td><td>₹ ${groupTotal.toFixed(2)}</td></tr>`;
+      const groupItems = rec.expenseGroups[groupName] || [];
+      let groupSubtotal = 0;
+      
+      if(groupItems.length > 0) {
+        // Main group heading
+        expenseHTML += `<tr style="background:#f9f5e3; font-weight:bold;">
+          <td class="col-exp-cat" style="font-weight:bold; color:#5d4037;">🏷️ ${escapeHtml(groupName)}</td>
+          <td class="col-exp-amt num" style="font-weight:bold;"></td>
+        </tr>`;
+        
+        // Individual items
+        groupItems.forEach(item => {
+          const itemAmount = item.total || 0;
+          groupSubtotal += itemAmount;
+          totalExpenseAmount += itemAmount;
+          
+          expenseHTML += `<tr style="background:#ffffff;">
+            <td class="col-exp-cat" style="padding-left:20px;">└─ ${escapeHtml(item.name)}</td>
+            <td class="col-exp-amt num">${formatINR(itemAmount)}</td>
+          </tr>`;
+        });
+        
+        // Group subtotal
+        expenseHTML += `<tr style="background:#fff9e6; border-top:1px solid #e0d0a8;">
+          <td class="col-exp-cat" style="text-align:right; padding-right:10px; font-weight:bold;">गट एकूण:</td>
+          <td class="col-exp-amt num" style="font-weight:bold; color:#c45c00;">${formatINR(groupSubtotal)}</td>
+        </tr>`;
+      }
     });
-    expensesTable.style.display = 'table';
-    expensesHeader.style.display = 'block';
+    
+    expenseHTML += `<tr style="background:#e8dcc0; font-weight:bold; border-top:2px solid #c45c00;">
+      <td class="col-exp-cat" style="font-weight:bold;">एकूण खर्च (Total):</td>
+      <td class="col-exp-amt num" style="font-weight:bold; color:#c45c00; font-size:1.1em;">${formatINR(totalExpenseAmount)}</td>
+    </tr>`;
+    
+    tbodyE.innerHTML = expenseHTML;
+    expensesSec.classList.remove('hidden-section');
   } else {
-    expensesTable.style.display = 'none';
-    expensesHeader.style.display = 'none';
+    expensesSec.classList.add('hidden-section');
   }
 
-  // Signatures Section
-  const signaturesTable = $('reportSignatures');
-  const signaturesHeader = signaturesTable.previousElementSibling;
-  const signRoles = rec.signRoles || [];
-  if (signRoles.length > 0) {
-      const sigTableBody = signaturesTable.querySelector('tbody');
-      sigTableBody.innerHTML = '';
-      let sigHtml = '';
-      for (let i = 0; i < signRoles.length; i += 2) {
-          const role1 = signRoles[i];
-          const role2 = signRoles[i+1];
-          sigHtml += '<tr style="border: none;">';
-          sigHtml += `<td style="border: none; padding: 25px 10px 5px; text-align: center; vertical-align: bottom;">
-                          <div style="border-top: 1px solid #555; padding-top: 5px;">${escapeHtml(role1)}</div>
-                      </td>`;
-          if (role2) {
-              sigHtml += `<td style="border: none; padding: 25px 10px 5px; text-align: center; vertical-align: bottom;">
-                              <div style="border-top: 1px solid #555; padding-top: 5px;">${escapeHtml(role2)}</div>
-                          </td>`;
-          } else {
-              sigHtml += '<td style="border: none;"></td>';
-          }
-          sigHtml += '</tr>';
-      }
-      sigTableBody.innerHTML = sigHtml;
-      signaturesTable.style.display = 'table';
-      signaturesHeader.style.display = 'block';
+  // Signatures — configured roles, else common office bearers
+  const signRoles = (rec.signRoles && rec.signRoles.length)
+    ? rec.signRoles
+    : ['अध्यक्ष', 'सचिव', 'खजिनदार'];
+  const sigWrap = $('reportSignatures');
+  const sigSec = $('secSignatures');
+  if (String(design.showSig) === '1') {
+    sigWrap.innerHTML = signRoles.map(role =>
+      `<div class="rpt-sig-box"><div class="rpt-sig-line">${escapeHtml(role)}</div></div>`
+    ).join('');
+    sigSec.classList.remove('hidden-section');
   } else {
-      signaturesTable.style.display = 'none';
-      signaturesHeader.style.display = 'none';
+    sigWrap.innerHTML = '';
+    sigSec.classList.add('hidden-section');
   }
-  
-  // Generated Date
+
   const now = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
   const formattedDate = new Intl.DateTimeFormat('mr-IN', options).format(now);
-  $('reportGeneratedDate').textContent = `अहवाल तयार करण्याची वेळ: ${formattedDate}`;
+  if (String(design.showDate) === '1') {
+    $('reportGeneratedDate').textContent = `अहवाल तयार करण्याची वेळ: ${formattedDate}`;
+    $('reportFooter').style.display = 'flex';
+  } else {
+    $('reportGeneratedDate').textContent = '';
+    $('reportFooter').style.display = String(design.showSig) === '1' ? 'flex' : 'none';
+  }
+
+  // When members-only mode, keep members section visible always
+  $('secMembersVargani').classList.remove('hidden-section');
 }
 
 
@@ -1175,6 +2679,210 @@ function importPrompt(){
     r.readAsText(f);
   };
   inp.click();
+}
+
+/* ========== Color and Image Customization ========== */
+function resetToDefaultColors(){
+  if(!confirm('Report colors को default में reset करायचे?')) return;
+  const defaults = Object.assign({}, DEFAULT_REPORT_DESIGN);
+  $('colorTitleText').value = defaults.colorTitleText;
+  $('colorSubtitleText').value = defaults.colorSubtitleText;
+  $('colorHeaderBg').value = defaults.colorHeaderBg;
+  $('colorHeaderText').value = defaults.colorHeaderText;
+  $('colorTableHeaderBg').value = defaults.colorTableHeaderBg;
+  $('colorTableHeaderText').value = defaults.colorTableHeaderText;
+  $('colorTableBodyText').value = defaults.colorTableBodyText;
+  $('colorTableBorder').value = defaults.colorTableBorder;
+  $('colorAlternateRow').value = defaults.colorAlternateRow;
+  $('colorSectionHeading').value = defaults.colorSectionHeading;
+  $('colorTotalAmount').value = defaults.colorTotalAmount;
+  $('colorFooterText').value = defaults.colorFooterText;
+  $('colorReportBg').value = defaults.colorReportBg;
+  onReportSettingChange();
+}
+
+function resetImageSizes(){
+  if(!confirm('Image sizes को default में reset करायचे?')) return;
+  const defaults = Object.assign({}, DEFAULT_REPORT_DESIGN);
+  $('imageGroupLogoW').value = defaults.imageGroupLogoW;
+  $('imageGroupLogoH').value = defaults.imageGroupLogoH;
+  $('imageGanpatiLogoW').value = defaults.imageGanpatiLogoW;
+  $('imageGanpatiLogoH').value = defaults.imageGanpatiLogoH;
+  onReportSettingChange();
+}
+
+// Image resizing functionality
+let currentResizingImage = null;
+let resizeStartX = 0;
+let resizeStartY = 0;
+let resizeStartWidth = 0;
+let resizeStartHeight = 0;
+let resizeHandle = null;
+let imageAspectRatio = 1;
+
+function initImageResizing(){
+  const images = document.querySelectorAll('#reportSheet .rpt-logo-wrap img');
+  images.forEach(img => {
+    img.classList.add('resizable-image');
+    img.addEventListener('click', selectImage);
+    img.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      deselectAllImages();
+    });
+  });
+  
+  document.addEventListener('mousedown', onResizeHandleMouseDown);
+  document.addEventListener('mousemove', onResizeHandleMouseMove);
+  document.addEventListener('mouseup', onResizeHandleMouseUp);
+  document.addEventListener('click', deselectAllImagesOnClickOutside);
+}
+
+function selectImage(e){
+  e.stopPropagation();
+  deselectAllImages();
+  const img = e.target;
+  img.classList.add('selected');
+  createResizeHandles(img);
+}
+
+function deselectAllImages(){
+  document.querySelectorAll('#reportSheet .rpt-logo-wrap img.selected').forEach(img => {
+    img.classList.remove('selected');
+  });
+  document.querySelectorAll('.image-resize-handle').forEach(h => h.remove());
+}
+
+function deselectAllImagesOnClickOutside(e){
+  if(!e.target.closest('#reportSheet .rpt-logo-wrap img') && !e.target.closest('.image-resize-handle')){
+    deselectAllImages();
+  }
+}
+
+function createResizeHandles(img){
+  const rect = img.getBoundingClientRect();
+  const container = img.parentElement;
+  const handles = ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se'];
+  
+  handles.forEach(pos => {
+    const handle = document.createElement('div');
+    handle.className = `image-resize-handle ${pos} show`;
+    handle.dataset.position = pos;
+    handle.dataset.imageId = img.id || 'logo';
+    container.appendChild(handle);
+  });
+}
+
+function onResizeHandleMouseDown(e){
+  if(!e.target.classList.contains('image-resize-handle')) return;
+  
+  e.preventDefault();
+  resizeHandle = e.target;
+  const imageId = resizeHandle.dataset.imageId;
+  currentResizingImage = document.getElementById(imageId) || document.querySelector('#reportSheet .rpt-logo-wrap img.selected');
+  
+  if(!currentResizingImage) return;
+  
+  const rect = currentResizingImage.getBoundingClientRect();
+  resizeStartX = e.clientX;
+  resizeStartY = e.clientY;
+  resizeStartWidth = rect.width;
+  resizeStartHeight = rect.height;
+  imageAspectRatio = resizeStartWidth / resizeStartHeight;
+}
+
+function onResizeHandleMouseMove(e){
+  if(!currentResizingImage || !resizeHandle) return;
+  
+  const deltaX = e.clientX - resizeStartX;
+  const deltaY = e.clientY - resizeStartY;
+  const position = resizeHandle.dataset.position;
+  
+  let newWidth = resizeStartWidth;
+  let newHeight = resizeStartHeight;
+  
+  // Calculate new dimensions based on handle position
+  if(position.includes('e')) newWidth = Math.max(20, resizeStartWidth + deltaX);
+  if(position.includes('w')) newWidth = Math.max(20, resizeStartWidth - deltaX);
+  if(position.includes('s')) newHeight = Math.max(20, resizeStartHeight + deltaY);
+  if(position.includes('n')) newHeight = Math.max(20, resizeStartHeight - deltaY);
+  
+  // Maintain aspect ratio
+  if(position.includes('e') || position.includes('w')){
+    newHeight = newWidth / imageAspectRatio;
+  } else if(position.includes('n') || position.includes('s')){
+    newWidth = newHeight * imageAspectRatio;
+  }
+  
+  // Apply new dimensions
+  newWidth = Math.max(20, Math.min(200, newWidth));
+  newHeight = Math.max(20, Math.min(200, newHeight));
+  
+  currentResizingImage.style.width = newWidth + 'px';
+  currentResizingImage.style.height = newHeight + 'px';
+  
+  updateResizeHandles();
+}
+
+function onResizeHandleMouseUp(e){
+  if(!currentResizingImage || !resizeHandle) return;
+  
+  // Save the new dimensions to the design settings
+  const isGroupLogo = currentResizingImage.id === 'reportGroupLogo';
+  const isGanpatiLogo = currentResizingImage.id === 'reportGanpatiLogo';
+  
+  const width = parseFloat(currentResizingImage.style.width) || currentResizingImage.offsetWidth;
+  const height = parseFloat(currentResizingImage.style.height) || currentResizingImage.offsetHeight;
+  
+  if(isGroupLogo){
+    $('imageGroupLogoW').value = Math.round(width);
+    $('imageGroupLogoH').value = Math.round(height);
+  } else if(isGanpatiLogo){
+    $('imageGanpatiLogoW').value = Math.round(width);
+    $('imageGanpatiLogoH').value = Math.round(height);
+  }
+  
+  onReportSettingChange();
+  currentResizingImage = null;
+  resizeHandle = null;
+}
+
+function updateResizeHandles(){
+  if(!currentResizingImage) return;
+  
+  const rect = currentResizingImage.getBoundingClientRect();
+  const container = currentResizingImage.parentElement;
+  const containerRect = container.getBoundingClientRect();
+  
+  document.querySelectorAll('.image-resize-handle.show').forEach(handle => {
+    const pos = handle.dataset.position;
+    const offset = 5;
+    
+    if(pos === 'nw'){
+      handle.style.top = (-offset) + 'px';
+      handle.style.left = (-offset) + 'px';
+    } else if(pos === 'n'){
+      handle.style.top = (-offset) + 'px';
+      handle.style.left = (rect.width / 2 - 5) + 'px';
+    } else if(pos === 'ne'){
+      handle.style.top = (-offset) + 'px';
+      handle.style.right = (-offset) + 'px';
+    } else if(pos === 'w'){
+      handle.style.top = (rect.height / 2 - 5) + 'px';
+      handle.style.left = (-offset) + 'px';
+    } else if(pos === 'e'){
+      handle.style.top = (rect.height / 2 - 5) + 'px';
+      handle.style.right = (-offset) + 'px';
+    } else if(pos === 'sw'){
+      handle.style.bottom = (-offset) + 'px';
+      handle.style.left = (-offset) + 'px';
+    } else if(pos === 's'){
+      handle.style.bottom = (-offset) + 'px';
+      handle.style.left = (rect.width / 2 - 5) + 'px';
+    } else if(pos === 'se'){
+      handle.style.bottom = (-offset) + 'px';
+      handle.style.right = (-offset) + 'px';
+    }
+  });
 }
 
 /* ========== Initialization: start on register view ========== */
